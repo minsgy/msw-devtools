@@ -1,0 +1,49 @@
+{
+  "name": "msw-devtools",
+  "version": "0.0.1",
+  "description": "MSW Devtools",
+  "author": "minsgy",
+  "license": "MIT",
+  "homepage": "https://github.com/minsgy/msw-devtools#readme",
+  "bugs": {
+    "url": "https://github.com/minsgy/msw-devtools/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/minsgy/msw-devtools.git"
+  },
+  "files": [
+    "dist",
+    "example/src/dist"
+  ],
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      }
+    },
+    "./styles": "./dist/index.css"
+  },
+  "scripts": {
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "build": "tsup src/index.ts --format cjs,esm --dts --minify",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@types/react": "^18.2.73",
+    "@types/react-dom": "^18.2.23",
+    "esbuild-sass-plugin": "^3.2.0",
+    "msw": "2.2.13",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsup": "^7.1.0",
+    "typescript": "^5.1.6"
+  }
+}

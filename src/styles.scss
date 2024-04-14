@@ -1,0 +1,26 @@
+.msw-devtools-wrapper {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+
+  background-color: #fff;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+
+  padding: 10px 16px;
+
+  color: #333;
+
+  & .inner {
+    display: flex;
+    flex-direction: column;
+  }
+
+  & .header {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+}
