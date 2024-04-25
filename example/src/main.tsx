@@ -1,9 +1,10 @@
+import { MSWDevtools } from "msw-devtools"
+import "msw-devtools/styles"
+
 import React from "react"
 import ReactDOM from "react-dom/client"
 import App from "./App.tsx"
 import "./index.css"
-import "./dist/index.css"
-import { MSWDevtools } from "./dist"
 
 const isDev = process.env.NODE_ENV === "development"
 const prepareWorker = async () => {

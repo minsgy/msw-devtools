@@ -1,6 +1,6 @@
+import "../styles.scss"
 import { useState } from "react"
 import { MSWDevtoolsProps } from "../types"
-import "../styles.scss"
 
 export const MSWDevtools = ({
   isEnabled = false,
