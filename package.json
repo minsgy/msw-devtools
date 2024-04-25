@@ -35,9 +35,7 @@
   "scripts": {
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
     "build": "tsup src/index.ts --format cjs,esm --dts --minify",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "setup": "pnpm i && cd example && pnpm i && pnpm run link",
-    "link": "pnpm link ./example/node_modules/react && pnpm link ./example/node_modules/react-dom"
+    "example": "pnpm build && cd example && pnpm i && pnpm dev"
   },
   "dependencies": {
     "@types/react": "^18.2.73",
@@ -48,5 +46,14 @@
     "react-dom": "^18.2.0",
     "tsup": "^7.1.0",
     "typescript": "^5.1.6"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "msw": ">=2"
+  },
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=8"
   }
 }
