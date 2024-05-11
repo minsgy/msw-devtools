@@ -29,3 +29,22 @@ export interface MSWDevtoolsProps extends ComponentPropsWithoutRef<"div"> {
 export type Setting = "mode" | "delay" | "status" | "isHidden"
 export type WorkerStatus = "enabled" | "disabled"
 export type WorkerMode = "normal" | "error"
+
+export type Origin = "msw" | "custom"
+
+export type DevToolsHandler = {
+  id: string
+  response: string
+  status: number
+  delay: number | null
+  description: string
+  headers?: Record<string, string>
+  origin: Origin | string
+}
+export interface DevtoolsRoute {
+  id: string
+  url: string
+  method: string
+  handlers: DevToolsHandler[]
+  selectedHandler?: string
+}

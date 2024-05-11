@@ -15,8 +15,7 @@
     "url": "git+https://github.com/minsgy/msw-devtools.git"
   },
   "files": [
-    "dist",
-    "example/src/dist"
+    "dist"
   ],
   "exports": {
     "./package.json": "./package.json",
@@ -44,8 +43,10 @@
     "@types/react-dom": "^18.2.23",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "constate": "^3.3.2",
     "lucide-react": "^0.378.0",
     "msw": "2.2.13",
+    "postcss": "^8.4.38",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwind-merge": "^2.3.0",
@@ -64,7 +65,7 @@
     "react-dom": ">=18"
   },
   "engines": {
-    "node": ">=20",
-    "pnpm": ">=8"
+    "node": ">=20.11.1",
+    "pnpm": ">=9.0.6"
   }
 }

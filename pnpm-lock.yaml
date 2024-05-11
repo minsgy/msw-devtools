@@ -26,12 +26,18 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      constate:
+        specifier: ^3.3.2
+        version: 3.3.2(react@18.2.0)
       lucide-react:
         specifier: ^0.378.0
         version: 0.378.0(react@18.2.0)
       msw:
         specifier: 2.2.13
         version: 2.2.13(typescript@5.1.6)
+      postcss:
+        specifier: ^8.4.38
+        version: 8.4.38
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -51,9 +57,6 @@ importers:
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.19(postcss@8.4.38)
-      postcss:
-        specifier: ^8.4.38
-        version: 8.4.38
       tailwindcss:
         specifier: ^3.4.3
         version: 3.4.3
@@ -562,6 +565,11 @@ packages:
   commander@4.1.1:
     resolution: {integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==}
     engines: {node: '>= 6'}
+
+  constate@3.3.2:
+    resolution: {integrity: sha512-ZnEWiwU6QUTil41D5EGpA7pbqAPGvnR9kBjko8DzVIxpC60mdNKrP568tT5WLJPAxAOtJqJw60+h79ot/Uz1+Q==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
   cookie@0.5.0:
     resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
@@ -1595,6 +1603,10 @@ snapshots:
   color-name@1.1.4: {}
 
   commander@4.1.1: {}
+
+  constate@3.3.2(react@18.2.0):
+    dependencies:
+      react: 18.2.0
 
   cookie@0.5.0: {}
 
