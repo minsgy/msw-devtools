@@ -22,7 +22,7 @@ comming soon
 ## Installation
 
 ```bash
-npm install msw-devtools
+npm install @minsgy/msw-devtools
 ```
 
 ## usage
