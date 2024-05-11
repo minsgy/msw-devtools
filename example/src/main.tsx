@@ -23,7 +23,7 @@ prepareWorker().then((worker) =>
       <MSWDevtools
         worker={worker}
         isEnabled={isDev}
-        apiUrl="https://example.com"
+        apiUrl="https://api.example.com"
       >
         <App />
       </MSWDevtools>

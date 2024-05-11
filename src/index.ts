@@ -1,3 +1,4 @@
+import "./index.css"
 import { MSWDevtools } from "./components/MSWDevtools"
 
 export { MSWDevtools }
