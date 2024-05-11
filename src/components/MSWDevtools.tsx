@@ -1,6 +1,9 @@
-import "../styles.scss"
+import "../styles/global.css"
 import { useState } from "react"
 import { MSWDevtoolsProps } from "../types"
+import { Button } from "./ui/button"
+import { Card, CardContent, CardFooter, CardHeader } from "./ui/card"
+import { H3, P } from "./ui/typography"
 
 export const MSWDevtools = ({
   isEnabled = false,
@@ -22,31 +25,36 @@ export const MSWDevtools = ({
 
   return (
     <>
-      <div className="msw-devtools-wrapper">
-        <div className="header">
-          <h2>MSW Devtools</h2>
-          <p>API URL: {apiUrl}</p>
-          <p>Worker Status: {isReady ? "Ready" : "Not Ready"}</p>
-        </div>
-        <div className="inner">
-          <button
-            onClick={() => {
-              setIsReady(true)
-              worker.start()
-            }}
-          >
-            Start Worker
-          </button>
-          <button
-            onClick={() => {
-              setIsReady(false)
-              worker.stop()
-            }}
-          >
-            Stop Worker
-          </button>
-        </div>
-      </div>
+      <Card className="absolute bottom-[20px] right-[20px] p-[20px]">
+        <CardHeader>
+          <H3>MSW Devtools</H3>
+        </CardHeader>
+        <CardContent>
+          <P>API URL: {apiUrl}</P>
+          <P>Worker Status: {isReady ? "Ready" : "Not Ready"}</P>
+        </CardContent>
+        <CardFooter>
+          <div className="flex gap-4">
+            <Button
+              onClick={() => {
+                setIsReady(true)
+                worker.start()
+              }}
+            >
+              Start Worker
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => {
+                setIsReady(false)
+                worker.stop()
+              }}
+            >
+              Stop Worker
+            </Button>
+          </div>
+        </CardFooter>
+      </Card>
       {children}
     </>
   )
