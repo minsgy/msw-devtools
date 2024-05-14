@@ -13,7 +13,8 @@ This repository contains a collection of tools and scripts that are useful for d
 
 ## 🚩 The project is in its early stages of development 🚩
 
-- This project is based on MSW v2 and works only in a browser environment.
+- This project is based on `MSW v2` and works only in a browser environment.
+- currently only support `React`
 
 ## Features
 
@@ -32,10 +33,10 @@ comming soon
 ## roadmap
 
 - [ ] Add UI for MSW Devtools
-  - [ ] Add handler list
+  - [x] Add handler list
   - [ ] Add handler details
   - [ ] Add handler Editor (add, edit, delete handlers)
-  - [ ] Add support for REST handlers
+  - [x] Add support for REST handlers
   - [ ] Add support for GraphQL handlers
 - [ ] Add Utility functions
   - [ ] Add handler list
@@ -45,7 +46,7 @@ comming soon
   - [ ] Add support for REST handlers
   - [ ] Add support for GraphQL handlers
 - [ ] Add Vanilla JS support
-- [ ] Add React support
+- [x] Add React support
 - [ ] Add Vue support
 - [ ] Add Next.js (SSR) support
 - [ ] Add codesandbox examples
