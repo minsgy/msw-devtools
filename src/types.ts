@@ -1,5 +1,6 @@
 import { SetupWorker } from "msw/lib/browser"
 import { ComponentPropsWithoutRef } from "react"
+import { MENU_TABS, ROUTE_METHODS } from "./constants"
 
 export interface MSWDevtoolsProps extends ComponentPropsWithoutRef<"div"> {
   /**
@@ -26,10 +27,20 @@ export interface MSWDevtoolsProps extends ComponentPropsWithoutRef<"div"> {
   position?: "top" | "bottom"
 }
 
+export type Methods =
+  | "GET"
+  | "POST"
+  | "PUT"
+  | "DELETE"
+  | "PATCH"
+  | "HEAD"
+  | "OPTIONS"
+  | "ALL"
+
 export type Setting = "mode" | "delay" | "status" | "isHidden"
 export type WorkerStatus = "enabled" | "disabled"
 export type WorkerMode = "normal" | "error"
-
+export type Tab = (typeof MENU_TABS)[number]
 export type Origin = "msw" | "custom"
 
 export type DevToolsHandler = {
@@ -44,7 +55,7 @@ export type DevToolsHandler = {
 export interface DevtoolsRoute {
   id: string
   url: string
-  method: string
+  method: Methods
   handlers: DevToolsHandler[]
   selectedHandler?: string
 }

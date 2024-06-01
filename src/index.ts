@@ -1,5 +1,6 @@
-import "./index.css"
-import { MSWDevtools } from "./components/MSWDevtools"
+import "./shared/styles/global.css"
+import { MSWDevtools } from "./app/MSWDevtools"
 
 export { MSWDevtools }
 export * from "./types"
+export * from "./constants"
