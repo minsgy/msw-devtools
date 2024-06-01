@@ -1,5 +1,5 @@
+import { DevtoolsRoute } from "@/types"
 import { SetupWorkerApi } from "msw/lib/browser"
-import { DevtoolsRoute } from "../types"
 
 export const createdUuid = (): string => {
   return self.crypto.randomUUID()
@@ -8,7 +8,6 @@ export const createdUuid = (): string => {
 export const generatorSerializedRouteHandlers = (
   handlers: ReturnType<SetupWorkerApi["listHandlers"]>
 ): DevtoolsRoute[] => {
-  console.log(handlers)
   return handlers.map((handler) => ({
     id: createdUuid(),
     url: (handler.info as any).path,
