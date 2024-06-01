@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "rootDir": "./src",
     "baseUrl": ".",
     "composite": false,
     "declaration": true,
@@ -19,9 +20,9 @@
     "module": "ESNext",
     "target": "es6",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", "types"],
+  "include": ["src/**/*.tsx", "src/**/*.ts", "types"],
   "exclude": ["node_modules"]
 }
