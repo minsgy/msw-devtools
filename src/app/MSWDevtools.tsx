@@ -3,9 +3,20 @@ import { MSWDevtoolsProps } from "../types"
 import { DevtoolsHandlerList } from "../features/DevtoolsHandlerList"
 import { FixedLayout } from "../shared/ui/FixedLayout"
 import { MswControllerHeader } from "../features/MswControllerHeader"
-import { MswDevToolsProvider } from "@/providers/useMswDevtoolsContext"
+import {
+  MswDevToolsProvider,
+  useRoute,
+} from "@/providers/useMswDevtoolsContext"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs"
 import { Separator } from "@/shared/ui/separator"
+import { createHandler } from "@/shared/utils/createHandler"
+import {
+  createdUuid,
+  generatorSerializedRouteHandlers,
+} from "@/shared/utils/generatorSerializedRouteHandlers"
+import { HttpMethods } from "msw"
+import { useEffect } from "react"
+import { TestButton } from "@/features/TestButton"
 
 export const MSWDevtools = ({
   isEnabled = false,
@@ -32,6 +43,7 @@ export const MSWDevtools = ({
       >
         <FixedLayout>
           <MswControllerHeader />
+          <TestButton />
           <Separator />
           <Tabs defaultValue="handlers">
             <TabsList className="w-fit">

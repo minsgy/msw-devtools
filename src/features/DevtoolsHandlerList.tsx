@@ -1,27 +1,31 @@
 "use client"
 
 import { match } from "ts-pattern"
-import { Methods } from ".."
-import { useWorkerValue } from "../providers/useMswDevtoolsContext"
 
 import { cn } from "@/shared/lib/utils"
 import { Checkbox } from "@/shared/ui/checkbox"
 import { InlineCode } from "@/shared/ui/typography"
-import { generatorSerializedRouteHandlers } from "@/shared/utils/generatorSerializedRouteHandlers"
+import { StatusSelect } from "./StatusSelect"
+import { HttpMethods } from "msw"
+import { useRoute } from "@/providers/useMswDevtoolsContext"
 
 export const DevtoolsHandlerList = () => {
-  const worker = useWorkerValue()
-  const handlers = worker?.listHandlers() ?? []
-  const serializedHandlers = generatorSerializedRouteHandlers(handlers)
+  const { route } = useRoute()
 
   return (
     <ul className="[&>li]:border-b-[1px] [&>li]:border-solid [&>li]:border-white list-none overflow-y-auto h-[250px] scrollbar-hide">
-      {serializedHandlers.map((handler) => (
+      {route.map((handler) => (
         <li key={handler.id} className="px-[6px] py-[12px] flex items-center">
-          <Checkbox id={handler.id} />
-          <label htmlFor={handler.id} className="pl-[12px]">
+          <Checkbox id={handler.id} checked={handler.isUsed} />
+          <label
+            htmlFor={handler.id}
+            className="pl-[12px] flex items-center w-full"
+          >
             <MethodTag method={handler.method} />
-            <span className="ml-2 font-semibold">{handler.url}</span>
+            <span className="font-semibold">{handler.url}</span>
+            <div className="ml-auto">
+              <StatusSelect />
+            </div>
           </label>
         </li>
       ))}
@@ -29,13 +33,13 @@ export const DevtoolsHandlerList = () => {
   )
 }
 
-export const MethodTag = ({ method }: { method: Methods }) => {
+export const MethodTag = ({ method }: { method: HttpMethods }) => {
   const className = match(method)
-    .with("GET", () => "text-red-500")
-    .with("POST", () => "text-blue-500")
-    .with("PUT", () => "text-green-500")
-    .with("DELETE", () => "text-yellow-500")
-    .with("PATCH", () => "text-purple-500")
+    .with(HttpMethods.GET, () => "text-red-500")
+    .with(HttpMethods.POST, () => "text-blue-500")
+    .with(HttpMethods.PUT, () => "text-green-500")
+    .with(HttpMethods.DELETE, () => "text-yellow-500")
+    .with(HttpMethods.PATCH, () => "text-purple-500")
     .otherwise(() => "text-white")
 
   return (

@@ -18,17 +18,20 @@ const [
   useWorkerValue,
   useEnabledUpdate,
   useTabIndex,
+  useRoute,
 ] = constate(
   (initialState: MswDevtoolsContextType) => {
-    const { state, setEnabled } = useMswDevtoolsState(initialState)
+    const { state, setEnabled, route, setRoute } =
+      useMswDevtoolsState(initialState)
     const { tab, handleTabChange } = useMswDevtoolsTabs()
-    return { state, setEnabled, tab, handleTabChange }
+    return { state, setEnabled, tab, handleTabChange, route, setRoute }
   },
   (value) => value.state.apiUrl,
   (value) => value.state.isEnabled,
   (value) => value.state.worker,
   (value) => value.setEnabled,
-  (value) => ({ tab: value.tab, handleTabChange: value.handleTabChange })
+  (value) => ({ tab: value.tab, handleTabChange: value.handleTabChange }),
+  (value) => ({ route: value.route, handleRouteChange: value.setRoute })
 )
 
 export {
@@ -38,4 +41,5 @@ export {
   useWorkerValue,
   useEnabledUpdate,
   useTabIndex,
+  useRoute,
 }
