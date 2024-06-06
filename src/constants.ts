@@ -1,12 +1,5 @@
-export const ROUTE_METHODS = [
-  "GET",
-  "POST",
-  "PUT",
-  "PATCH",
-  "DELETE",
-  "HEAD",
-  "OPTION",
-  "ALL",
-] as const
+import { HttpMethods } from "msw"
+
+export const ROUTE_METHODS = Object.values(HttpMethods)
 
 export const MENU_TABS = ["handlers", "config"] as const

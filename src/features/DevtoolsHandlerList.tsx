@@ -1,27 +1,54 @@
 "use client"
 
 import { match } from "ts-pattern"
-import { Methods } from ".."
-import { useWorkerValue } from "../providers/useMswDevtoolsContext"
 
-import { cn } from "@/shared/lib/utils"
+import { cn } from "@/shared/lib/cn"
 import { Checkbox } from "@/shared/ui/checkbox"
-import { InlineCode } from "@/shared/ui/typography"
-import { generatorSerializedRouteHandlers } from "@/shared/utils/generatorSerializedRouteHandlers"
+import { InlineCode, P } from "@/shared/ui/typography"
+import { HttpMethods } from "msw"
+import {
+  useEditorRouteState,
+  useRoute,
+} from "@/providers/useMswDevtoolsContext"
+import { HandlerSelect } from "./HandlerSelect"
+import { Button } from "@/shared/ui/button"
 
 export const DevtoolsHandlerList = () => {
-  const worker = useWorkerValue()
-  const handlers = worker?.listHandlers() ?? []
-  const serializedHandlers = generatorSerializedRouteHandlers(handlers)
+  const { routes, onToggleHandler } = useRoute()
+  const { onOpenEditPanel } = useEditorRouteState()
 
   return (
-    <ul className="[&>li]:border-b-[1px] [&>li]:border-solid [&>li]:border-white list-none overflow-y-auto h-[250px] scrollbar-hide">
-      {serializedHandlers.map((handler) => (
-        <li key={handler.id} className="px-[6px] py-[12px] flex items-center">
-          <Checkbox id={handler.id} />
-          <label htmlFor={handler.id} className="pl-[12px]">
-            <MethodTag method={handler.method} />
-            <span className="ml-2 font-semibold">{handler.url}</span>
+    <ul className=" list-none overflow-y-auto h-[250px] scrollbar-hide bg-secondary rounded-[4px]">
+      {routes.map((route) => (
+        <li key={route.id} className="p-[12px] flex items-center">
+          <Checkbox
+            id={route.id}
+            checked={route.isSkip}
+            onCheckedChange={(checked) => {
+              onToggleHandler(route.id)
+            }}
+          />
+          <label
+            htmlFor={route.id}
+            className="pl-[12px] flex items-center w-full"
+          >
+            <MethodTag method={route.method} />
+            <span className="font-semibold">{route.url}</span>
+            <div className="ml-auto flex items-center">
+              <HandlerSelect
+                options={route.handlers}
+                defaultValue={route.handlers[0].id}
+              />
+              <Button
+                className="ml-[12px]"
+                variant="ghost"
+                onClick={() => {
+                  onOpenEditPanel(route)
+                }}
+              >
+                Edit
+              </Button>
+            </div>
           </label>
         </li>
       ))}
@@ -29,13 +56,13 @@ export const DevtoolsHandlerList = () => {
   )
 }
 
-export const MethodTag = ({ method }: { method: Methods }) => {
+export const MethodTag = ({ method }: { method: HttpMethods }) => {
   const className = match(method)
-    .with("GET", () => "text-red-500")
-    .with("POST", () => "text-blue-500")
-    .with("PUT", () => "text-green-500")
-    .with("DELETE", () => "text-yellow-500")
-    .with("PATCH", () => "text-purple-500")
+    .with(HttpMethods.GET, () => "text-red-500")
+    .with(HttpMethods.POST, () => "text-blue-500")
+    .with(HttpMethods.PUT, () => "text-green-500")
+    .with(HttpMethods.DELETE, () => "text-yellow-500")
+    .with(HttpMethods.PATCH, () => "text-purple-500")
     .otherwise(() => "text-white")
 
   return (

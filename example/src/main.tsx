@@ -20,11 +20,7 @@ const prepareWorker = async () => {
 prepareWorker().then((worker) =>
   ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-      <MSWDevtools
-        worker={worker}
-        isEnabled={isDev}
-        apiUrl="https://api.example.com"
-      >
+      <MSWDevtools worker={worker} isEnabled={isDev}>
         <App />
       </MSWDevtools>
     </React.StrictMode>
