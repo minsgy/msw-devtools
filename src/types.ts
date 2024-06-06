@@ -1,12 +1,12 @@
 import { SetupWorker } from "msw/lib/browser"
 import { ComponentPropsWithoutRef } from "react"
-import { MENU_TABS, ROUTE_METHODS } from "./constants"
+import { MENU_TABS } from "./constants"
+import { HttpMethods } from "msw"
 
 export interface MSWDevtoolsProps extends ComponentPropsWithoutRef<"div"> {
   /**
    * The base url of your requests. This is required to use 'error' mode as it takes the base domain and intercepts any request regardless of the path.
    */
-  apiUrl: string
   /**
    * If the worker is not enabled, we won't ever load it and will just load children.
    */
@@ -27,35 +27,29 @@ export interface MSWDevtoolsProps extends ComponentPropsWithoutRef<"div"> {
   position?: "top" | "bottom"
 }
 
-export type Methods =
-  | "GET"
-  | "POST"
-  | "PUT"
-  | "DELETE"
-  | "PATCH"
-  | "HEAD"
-  | "OPTIONS"
-  | "ALL"
-
 export type Setting = "mode" | "delay" | "status" | "isHidden"
 export type WorkerStatus = "enabled" | "disabled"
 export type WorkerMode = "normal" | "error"
-export type Tab = (typeof MENU_TABS)[number]
 export type Origin = "msw" | "custom"
 
-export type DevToolsHandler = {
+export type DevtoolsHandler = {
   id: string
-  response: string
+  response: Record<string, any>
   status: number
   delay: number | null
   description: string
   headers?: Record<string, string>
   origin: Origin | string
 }
-export interface DevtoolsRoute {
+
+export type DevtoolsRoute = {
   id: string
   url: string
-  method: Methods
-  handlers: DevToolsHandler[]
-  selectedHandler?: string
+  method: HttpMethods
+  handlers: DevtoolsHandler[]
+  selectedHandlerIndex: number
+}
+
+export type EnhancedDevtoolsRoute = DevtoolsRoute & {
+  isSkip?: boolean
 }

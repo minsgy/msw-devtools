@@ -3,39 +3,78 @@
 import constate from "constate"
 import { SetupWorker } from "msw/lib/browser"
 import { useMswDevtoolsState } from "../hooks/useMswDevtoolsState"
-import { useMswDevtoolsTabs } from "../hooks/useMswDevtoolsTabs"
+import { useEditorPanelState } from "@/hooks/useEditorPanelState"
 
 export type MswDevtoolsContextType = {
   isEnabled: boolean
   worker?: SetupWorker
-  apiUrl: string
 }
 
 const [
   MswDevToolsProvider,
-  useApiUrlValue,
   useIsEnabledValue,
   useWorkerValue,
   useEnabledUpdate,
-  useTabIndex,
+  useRoute,
+  useEditorRouteState,
 ] = constate(
   (initialState: MswDevtoolsContextType) => {
-    const { state, setEnabled } = useMswDevtoolsState(initialState)
-    const { tab, handleTabChange } = useMswDevtoolsTabs()
-    return { state, setEnabled, tab, handleTabChange }
+    const {
+      state,
+      setEnabled,
+      routes,
+      setRoutes,
+      onAddHandler,
+      onDeleteHandler,
+      onToggleHandler,
+    } = useMswDevtoolsState(initialState)
+    const {
+      selectedRoute,
+      onOpenEditPanel,
+      setIsOpenEditorPanel,
+      isOpenEditorPanel,
+      onCloseEditPanel,
+    } = useEditorPanelState()
+
+    return {
+      state,
+      setEnabled,
+      routes,
+      setRoutes,
+      onAddHandler,
+      onDeleteHandler,
+      onToggleHandler,
+      selectedRoute,
+      onOpenEditPanel,
+      setIsOpenEditorPanel,
+      isOpenEditorPanel,
+      onCloseEditPanel,
+    }
   },
-  (value) => value.state.apiUrl,
   (value) => value.state.isEnabled,
   (value) => value.state.worker,
   (value) => value.setEnabled,
-  (value) => ({ tab: value.tab, handleTabChange: value.handleTabChange })
+  (value) => ({
+    routes: value.routes,
+    onRoutesChange: value.setRoutes,
+    onDeleteHandler: value.onDeleteHandler,
+    onAddHandler: value.onAddHandler,
+    onToggleHandler: value.onToggleHandler,
+  }),
+  (value) => ({
+    selectedRoute: value.selectedRoute,
+    onOpenEditPanel: value.onOpenEditPanel,
+    isOpenEditorPanel: value.isOpenEditorPanel,
+    setIsOpenEditorPanel: value.setIsOpenEditorPanel,
+    onCloseEditPanel: value.onCloseEditPanel,
+  })
 )
 
 export {
   MswDevToolsProvider,
-  useApiUrlValue,
   useIsEnabledValue,
   useWorkerValue,
   useEnabledUpdate,
-  useTabIndex,
+  useRoute,
+  useEditorRouteState,
 }

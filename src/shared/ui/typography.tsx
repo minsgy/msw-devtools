@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react"
-import { cn } from "../lib/utils"
+import { cn } from "../lib/cn"
 
 const H1 = forwardRef<
   HTMLHeadingElement,
@@ -108,11 +108,7 @@ const P = forwardRef<
   React.HTMLAttributes<HTMLParagraphElement>
 >((props, ref) => {
   return (
-    <p
-      {...props}
-      ref={ref}
-      className={cn("leading-7 [&:not(:first-child)]:mt-6", props.className)}
-    >
+    <p {...props} ref={ref} className={cn("leading-7", props.className)}>
       {props.children}
     </p>
   )

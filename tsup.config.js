@@ -4,7 +4,7 @@ export default defineConfig({
   entry: ["src/index.ts"],
   treeshake: true,
   sourcemap: false,
-  minify: true,
+  minify: false,
   clean: true,
   dts: true,
   splitting: true,
