@@ -1,6 +1,5 @@
 import { SetupWorker } from "msw/lib/browser"
 import { ComponentPropsWithoutRef } from "react"
-import { MENU_TABS } from "./constants"
 import { HttpMethods } from "msw"
 
 export interface MSWDevtoolsProps extends ComponentPropsWithoutRef<"div"> {
@@ -34,9 +33,8 @@ export type Origin = "msw" | "custom"
 
 export type DevtoolsHandler = {
   id: string
-  response: Record<string, any>
+  response: string
   status: number
-  delay: number | null
   description: string
   headers?: Record<string, string>
   origin: Origin | string
@@ -48,6 +46,7 @@ export type DevtoolsRoute = {
   method: HttpMethods
   handlers: DevtoolsHandler[]
   selectedHandlerIndex: number
+  delay: number | null
 }
 
 export type EnhancedDevtoolsRoute = DevtoolsRoute & {

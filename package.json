@@ -32,8 +32,8 @@
     "./styles": "./dist/index.css"
   },
   "scripts": {
-    "dev": "tsup src/index.ts --format cjs,esm --dts --watch ",
-    "build": "tsup src/index.ts --format cjs,esm --dts --minify ",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "build": "tsup src/index.ts --format cjs,esm --dts --minify",
     "example": "pnpm build && cd example && pnpm i && pnpm dev"
   },
   "dependencies": {
@@ -70,7 +70,7 @@
     "tailwind-merge": "2.3.0",
     "tailwindcss-animate": "1.0.7",
     "ts-pattern": "^5.1.2",
-    "typescript": "5.1.6"
+    "typescript": "5.4.5"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.19",
