@@ -1,19 +1,20 @@
 import { CompletionContext, CompletionResult } from "@codemirror/autocomplete"
-import { jsonLanguage } from "@codemirror/lang-json"
 import { syntaxTree } from "@codemirror/language"
 import { faker } from "@faker-js/faker"
+import { Extension } from "@uiw/react-codemirror"
+import { json5Language } from "codemirror-json5"
 
-export const jsonAutoComplete = () => {
-  return jsonLanguage.data.of({
+export const jsonAutoComplete: () => Extension = () => {
+  return json5Language.data.of({
     autocomplete: createJsonPropertyAutocomplete({
       faker,
     }),
   })
 }
 
-function createJsonPropertyAutocomplete(
+const createJsonPropertyAutocomplete = (
   globalObject: Record<string, unknown>
-): (context: CompletionContext) => CompletionResult | null {
+): ((context: CompletionContext) => CompletionResult | null) => {
   return (context) => {
     let nodeBefore = syntaxTree(context.state).resolveInner(context.pos, -1)
     if (
@@ -34,12 +35,12 @@ function createJsonPropertyAutocomplete(
   }
 }
 
-function completeProperties(
+const completeProperties = (
   from: number,
   variableName: string,
   source: string,
   globalObject: Record<string, any>
-): CompletionResult | null {
+): CompletionResult | null => {
   const variables = source.split(".")
   const lastIndex = variables.lastIndexOf(variableName)
 
