@@ -23,6 +23,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*.tsx", "src/**/*.ts", "types"],
+  "include": ["src/**/*.tsx", "src/**/*.ts", "types", "src/**/*.d.ts"],
   "exclude": ["node_modules"]
 }

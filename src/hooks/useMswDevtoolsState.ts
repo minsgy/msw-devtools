@@ -26,10 +26,10 @@ export const useMswDevtoolsState = (initialState: MswDevtoolsContextType) => {
     setRoutes((prev) => [...prev, route])
   }
 
-  const onToggleHandler = (id: string) => {
+  const onToggleHandler = (id: string, isSkip: boolean) => {
     const findIndex = routes.findIndex((route) => route.id === id)
     const newRoutes = [...routes]
-    newRoutes[findIndex].isSkip = !newRoutes[findIndex].isSkip
+    newRoutes[findIndex].isSkip = isSkip
     setRoutes(newRoutes)
   }
 

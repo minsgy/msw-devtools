@@ -6,26 +6,28 @@ export const createdUuid = (): string => {
 }
 
 export const generatorSerializedRouteHandlers = (
-  handlers: readonly RequestHandler[]
+  routes: readonly RequestHandler[]
 ): EnhancedDevtoolsRoute[] => {
-  return handlers.map((handler) => ({
-    id: createdUuid(),
-    url: (handler.info as any).path,
-    method: (handler.info as any).method,
-    isSkip: (handler.info as any).isSkip ?? true,
-    handlers: [
-      {
-        id: createdUuid(),
-        response: {
-          test: "test",
-        },
-        status: 200,
-        delay: 0,
-        description: "MSW Handler (auto-generated)",
-        origin: "msw",
-      },
-    ],
-    selectedHandlerIndex: 0,
-    description: "MSW Route (auto-generated)",
-  }))
+  return routes.map((route) => {
+    console.log(route)
+    const handlers = Array.isArray((route as any).options)
+      ? (route as any).options.map((option: any) => ({
+          id: createdUuid(),
+          response: JSON.stringify(option.response),
+          status: option.status,
+          description: option.description,
+          origin: "msw",
+        }))
+      : []
+    return {
+      id: createdUuid(),
+      url: (route.info as any).path,
+      method: (route.info as any).method,
+      isSkip: (route.info as any).isSkip ?? true,
+      handlers,
+      delay: 0,
+      selectedHandlerIndex: 0,
+      description: "MSW Route (auto-generated)",
+    }
+  })
 }

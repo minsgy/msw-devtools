@@ -3,7 +3,6 @@
 import { match } from "ts-pattern"
 
 import { cn } from "@/shared/lib/cn"
-import { Checkbox } from "@/shared/ui/checkbox"
 import { InlineCode, P } from "@/shared/ui/typography"
 import { HttpMethods } from "msw"
 import {
@@ -12,32 +11,42 @@ import {
 } from "@/providers/useMswDevtoolsContext"
 import { HandlerSelect } from "./HandlerSelect"
 import { Button } from "@/shared/ui/button"
+import { InputContainer } from "@/shared/ui/input-container"
+import { Label } from "@/shared/ui/label"
+import { Switch } from "@/shared/ui/switch"
 
 export const DevtoolsHandlerList = () => {
   const { routes, onToggleHandler } = useRoute()
   const { onOpenEditPanel } = useEditorRouteState()
 
   return (
-    <ul className=" list-none overflow-y-auto h-[250px] scrollbar-hide bg-secondary rounded-[4px]">
+    <ul className="list-none overflow-y-auto h-[250px] scrollbar-hide rounded-[4px] bg-transparent">
+      <li className="p-[12px] flex items-center">
+        <P className="font-semibold">Skip</P>
+        <P className="font-semibold">Actions</P>
+        <P className="font-semibold">Options</P>
+      </li>
       {routes.map((route) => (
         <li key={route.id} className="p-[12px] flex items-center">
-          <Checkbox
-            id={route.id}
+          <Switch
             checked={route.isSkip}
             onCheckedChange={(checked) => {
-              onToggleHandler(route.id)
+              onToggleHandler(route.id, checked)
             }}
           />
-          <label
+          <Label
             htmlFor={route.id}
             className="pl-[12px] flex items-center w-full"
           >
             <MethodTag method={route.method} />
             <span className="font-semibold">{route.url}</span>
             <div className="ml-auto flex items-center">
+              <InputContainer label="delay" />
               <HandlerSelect
-                options={route.handlers}
-                defaultValue={route.handlers[0].id}
+                options={route.handlers ?? []}
+                defaultValue={
+                  route.handlers?.[route.selectedHandlerIndex]?.id ?? undefined
+                }
               />
               <Button
                 className="ml-[12px]"
@@ -49,7 +58,7 @@ export const DevtoolsHandlerList = () => {
                 Edit
               </Button>
             </div>
-          </label>
+          </Label>
         </li>
       ))}
     </ul>

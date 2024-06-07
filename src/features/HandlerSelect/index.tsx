@@ -16,12 +16,12 @@ export const HandlerSelect = ({ options, ...rest }: HandlerSelectProps) => {
   return (
     <Select {...rest}>
       <SelectTrigger className="w-[280px]">
-        <SelectValue placeholder="Select a timezone" />
+        <SelectValue placeholder="test" />
       </SelectTrigger>
       <SelectContent>
-        {options.map(({ id, description }) => (
+        {options?.map(({ id, description, status }) => (
           <SelectItem key={id} value={id}>
-            {description}
+            {status} - {description}
           </SelectItem>
         ))}
       </SelectContent>
