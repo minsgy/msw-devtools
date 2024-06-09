@@ -18,6 +18,20 @@ export const handlers = [
           lastName: "Maverick",
         },
       },
+      {
+        status: 401,
+        description: "Unauthorized",
+        response: {
+          error: "Unauthorized",
+        },
+      },
+      {
+        status: 404,
+        description: "Not Found",
+        response: {
+          error: "Not Found",
+        },
+      },
     ]),
   http.post("https://api.example.com/user", () => {
     return HttpResponse.json({ success: true })

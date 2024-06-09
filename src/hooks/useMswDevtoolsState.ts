@@ -33,6 +33,13 @@ export const useMswDevtoolsState = (initialState: MswDevtoolsContextType) => {
     setRoutes(newRoutes)
   }
 
+  const onSelectHandler = (routeId: string, selectedHandlerId: string) => {
+    const findIndex = routes.findIndex((route) => route.id === routeId)
+    const newRoutes = [...routes]
+    newRoutes[findIndex].selectedHandlerId = selectedHandlerId
+    setRoutes(newRoutes)
+  }
+
   useEffect(() => {
     if (state.worker) {
       const usedRoutes = routes.filter(({ isSkip }) => isSkip)
@@ -48,5 +55,6 @@ export const useMswDevtoolsState = (initialState: MswDevtoolsContextType) => {
     onDeleteHandler,
     onAddHandler,
     onToggleHandler,
+    onSelectHandler,
   }
 }

@@ -10,12 +10,14 @@ import {
 } from "msw"
 
 export const createHandler = (route: DevtoolsRoute): RequestHandler | null => {
-  const { method, url, handlers, selectedHandlerIndex } = route
+  const { method, url, handlers, selectedHandlerId } = route
 
   const httpHandler = createHttpHandler(method)
   return httpHandler(url, async (info) => {
-    const handler = handlers[selectedHandlerIndex]
-    const jsonResponse = JSON.parse(handler.response)
+    const selectedHandler =
+      handlers.find((handler) => handler.id === selectedHandlerId) ??
+      handlers[0]
+    const jsonResponse = JSON.parse(selectedHandler.response)
 
     if (jsonResponse) {
       recursiveTransform(jsonResponse, (key, value) => {
@@ -35,7 +37,10 @@ export const createHandler = (route: DevtoolsRoute): RequestHandler | null => {
       await delay(route.delay)
     }
 
-    return HttpResponse.json(jsonResponse ?? { message: "No Response" })
+    return HttpResponse.json(jsonResponse ?? { message: "No Response" }, {
+      status: selectedHandler.status,
+      statusText: selectedHandler.description,
+    })
   })
 }
 

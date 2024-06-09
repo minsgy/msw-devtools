@@ -45,7 +45,7 @@ export type DevtoolsRoute = {
   url: string
   method: HttpMethods
   handlers: DevtoolsHandler[]
-  selectedHandlerIndex: number
+  selectedHandlerId: string
   delay: number | null
 }
 
