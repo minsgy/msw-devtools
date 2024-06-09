@@ -15,7 +15,7 @@ export type HandlerSelectProps = SelectProps & {
 export const HandlerSelect = ({ options, ...rest }: HandlerSelectProps) => {
   return (
     <Select {...rest}>
-      <SelectTrigger className="w-[280px]">
+      <SelectTrigger className="w-[180px] ml-[12px]">
         <SelectValue placeholder="test" />
       </SelectTrigger>
       <SelectContent>
