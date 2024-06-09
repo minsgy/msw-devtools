@@ -20,10 +20,22 @@ export interface MSWDevtoolsProps extends ComponentPropsWithoutRef<"div"> {
    */
   children?: React.ReactNode
   /**
-   * The position of the toolbar.
-   * @default 'top'
+   * The onRouteUpdate field is a callback function that will be executed every time an MSW Route is updated and reflected.
+   * This allows the execution of a callback function whenever MSW handlers are updated.
+   * @example
+   * // React Query example
+   * const queryClient = useQueryClient()
+   *  return (
+   *  <MSWDevtools
+   *   onRouteUpdate={() => {
+   *       queryClient.resetQueries()
+   *    }}
+   *  >
+   *   <App />
+   *  </MSWDevtools>
+   * )
    */
-  position?: "top" | "bottom"
+  onRouteUpdate?: (routes: EnhancedDevtoolsRoute[]) => void
 }
 
 export type Setting = "mode" | "delay" | "status" | "isHidden"
@@ -45,10 +57,11 @@ export type DevtoolsRoute = {
   url: string
   method: HttpMethods
   handlers: DevtoolsHandler[]
-  selectedHandlerIndex: number
+  selectedHandlerId: string
   delay: number | null
 }
 
 export type EnhancedDevtoolsRoute = DevtoolsRoute & {
-  isSkip?: boolean
+  enabled?: boolean
+  isHidden?: boolean
 }

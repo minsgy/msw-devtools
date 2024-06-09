@@ -16,7 +16,7 @@ import { Label } from "@/shared/ui/label"
 import { Switch } from "@/shared/ui/switch"
 
 export const DevtoolsHandlerList = () => {
-  const { routes, onToggleHandler } = useRoute()
+  const { routes, onToggleHandler, onSelectHandler } = useRoute()
   const { onOpenEditPanel } = useEditorRouteState()
 
   return (
@@ -29,7 +29,7 @@ export const DevtoolsHandlerList = () => {
       {routes.map((route) => (
         <li key={route.id} className="p-[12px] flex items-center">
           <Switch
-            checked={route.isSkip}
+            checked={route.enabled}
             onCheckedChange={(checked) => {
               onToggleHandler(route.id, checked)
             }}
@@ -43,10 +43,11 @@ export const DevtoolsHandlerList = () => {
             <div className="ml-auto flex items-center">
               <InputContainer label="delay" />
               <HandlerSelect
-                options={route.handlers ?? []}
-                defaultValue={
-                  route.handlers?.[route.selectedHandlerIndex]?.id ?? undefined
+                onValueChange={(handlerId) =>
+                  onSelectHandler(route.id, handlerId)
                 }
+                options={route.handlers ?? []}
+                defaultValue={route.handlers?.[0]?.id ?? undefined}
               />
               <Button
                 className="ml-[12px]"

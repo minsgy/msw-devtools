@@ -1,14 +1,14 @@
 "use client"
 
 import constate from "constate"
-import { SetupWorker } from "msw/lib/browser"
 import { useMswDevtoolsState } from "../hooks/useMswDevtoolsState"
 import { useEditorPanelState } from "@/hooks/useEditorPanelState"
+import { MSWDevtoolsProps } from ".."
 
-export type MswDevtoolsContextType = {
-  isEnabled: boolean
-  worker?: SetupWorker
-}
+export type MswDevtoolsContextType = Omit<
+  MSWDevtoolsProps,
+  "children" | "position"
+>
 
 const [
   MswDevToolsProvider,
@@ -27,6 +27,7 @@ const [
       onAddHandler,
       onDeleteHandler,
       onToggleHandler,
+      onSelectHandler,
     } = useMswDevtoolsState(initialState)
     const {
       selectedRoute,
@@ -49,6 +50,7 @@ const [
       setIsOpenEditorPanel,
       isOpenEditorPanel,
       onCloseEditPanel,
+      onSelectHandler,
     }
   },
   (value) => value.state.isEnabled,
@@ -60,6 +62,7 @@ const [
     onDeleteHandler: value.onDeleteHandler,
     onAddHandler: value.onAddHandler,
     onToggleHandler: value.onToggleHandler,
+    onSelectHandler: value.onSelectHandler,
   }),
   (value) => ({
     selectedRoute: value.selectedRoute,
