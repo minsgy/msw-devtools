@@ -29,7 +29,7 @@ export const DevtoolsHandlerList = () => {
       {routes.map((route) => (
         <li key={route.id} className="p-[12px] flex items-center">
           <Switch
-            checked={route.isSkip}
+            checked={route.enabled}
             onCheckedChange={(checked) => {
               onToggleHandler(route.id, checked)
             }}

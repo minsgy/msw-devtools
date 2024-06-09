@@ -7,6 +7,7 @@ export const MSWDevtools = ({
   isEnabled = false,
   children,
   worker,
+  onRouteUpdate,
 }: MSWDevtoolsProps) => {
   if ((isEnabled && !worker) || (isEnabled && worker && !worker)) {
     console.warn(
@@ -20,7 +21,11 @@ export const MSWDevtools = ({
 
   return (
     <>
-      <MswDevToolsProvider isEnabled={isEnabled} worker={worker}>
+      <MswDevToolsProvider
+        isEnabled={isEnabled}
+        worker={worker}
+        onRouteUpdate={onRouteUpdate}
+      >
         <MSWDevtoolsPanel />
       </MswDevToolsProvider>
       {children}

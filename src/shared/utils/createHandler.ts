@@ -1,4 +1,4 @@
-import { DevtoolsRoute } from "@/types"
+import { EnhancedDevtoolsRoute } from "@/types"
 import { faker } from "@faker-js/faker"
 import {
   HttpHandler,
@@ -9,16 +9,22 @@ import {
   delay,
 } from "msw"
 
-export const createHandler = (route: DevtoolsRoute): RequestHandler | null => {
-  const { method, url, handlers, selectedHandlerId } = route
+export const createHandler = (
+  route: EnhancedDevtoolsRoute
+): RequestHandler | null => {
+  const { method, url, handlers, selectedHandlerId, isHidden } = route
 
   const httpHandler = createHttpHandler(method)
   return httpHandler(url, async (info) => {
     const selectedHandler =
       handlers.find((handler) => handler.id === selectedHandlerId) ??
       handlers[0]
-    const jsonResponse = JSON.parse(selectedHandler.response)
 
+    if (isHidden) {
+      return new HttpResponse()
+    }
+
+    const jsonResponse = JSON.parse(selectedHandler.response)
     if (jsonResponse) {
       recursiveTransform(jsonResponse, (key, value) => {
         if (typeof value === "number") {

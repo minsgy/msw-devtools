@@ -1,16 +1,21 @@
 "use client"
 
-import { useState, useCallback, useEffect } from "react"
+import { useState, useCallback, useEffect, useRef } from "react"
 import { MswDevtoolsContextType } from "../providers/useMswDevtoolsContext"
 import { EnhancedDevtoolsRoute } from ".."
 import { generatorSerializedRouteHandlers } from "@/shared/utils/generatorSerializedRouteHandlers"
 import { generatorRequestHandler } from "@/shared/utils/generatorRequestHandler"
 
-export const useMswDevtoolsState = (initialState: MswDevtoolsContextType) => {
+export const useMswDevtoolsState = ({
+  onRouteUpdate,
+  ...initialState
+}: MswDevtoolsContextType) => {
+  const isMounted = useRef(false)
   const [state, setState] = useState(initialState)
   const [routes, setRoutes] = useState<EnhancedDevtoolsRoute[]>(
     generatorSerializedRouteHandlers(initialState.worker?.listHandlers() ?? [])
   )
+
   const setEnabled = useCallback((isEnabled: boolean) => {
     setState((prev) => ({
       ...prev,
@@ -26,10 +31,10 @@ export const useMswDevtoolsState = (initialState: MswDevtoolsContextType) => {
     setRoutes((prev) => [...prev, route])
   }
 
-  const onToggleHandler = (id: string, isSkip: boolean) => {
+  const onToggleHandler = (id: string, enabled: boolean) => {
     const findIndex = routes.findIndex((route) => route.id === id)
     const newRoutes = [...routes]
-    newRoutes[findIndex].isSkip = isSkip
+    newRoutes[findIndex].enabled = enabled
     setRoutes(newRoutes)
   }
 
@@ -42,15 +47,22 @@ export const useMswDevtoolsState = (initialState: MswDevtoolsContextType) => {
 
   useEffect(() => {
     if (state.worker) {
-      const usedRoutes = routes.filter(({ isSkip }) => isSkip)
-      state.worker.resetHandlers(...generatorRequestHandler(usedRoutes))
+      const usedRoutes = routes.filter(({ enabled }) => enabled)
+      const httpUsedRoutes = generatorRequestHandler(usedRoutes)
+      state.worker.resetHandlers(...httpUsedRoutes)
+      // first call is not needed
+      if (isMounted.current) {
+        onRouteUpdate?.(usedRoutes.filter(({ isHidden }) => !isHidden))
+      } else {
+        isMounted.current = true
+      }
     }
   }, [routes, state.worker])
 
   return {
     state,
     setEnabled,
-    routes,
+    routes: routes.filter(({ isHidden }) => !isHidden),
     setRoutes,
     onDeleteHandler,
     onAddHandler,

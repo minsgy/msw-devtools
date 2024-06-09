@@ -1,14 +1,14 @@
 "use client"
 
 import constate from "constate"
-import { SetupWorker } from "msw/lib/browser"
 import { useMswDevtoolsState } from "../hooks/useMswDevtoolsState"
 import { useEditorPanelState } from "@/hooks/useEditorPanelState"
+import { MSWDevtoolsProps } from ".."
 
-export type MswDevtoolsContextType = {
-  isEnabled: boolean
-  worker?: SetupWorker
-}
+export type MswDevtoolsContextType = Omit<
+  MSWDevtoolsProps,
+  "children" | "position"
+>
 
 const [
   MswDevToolsProvider,
