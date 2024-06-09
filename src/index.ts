@@ -4,4 +4,4 @@ import { MSWDevtools } from "./app/MSWDevtools"
 export { MSWDevtools }
 export * from "./types"
 export * from "./constants"
-export * from "./shared/lib/http"
+export * from "./shared/lib"
