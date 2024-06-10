@@ -7,18 +7,24 @@ import {
   HttpResponse,
   RequestHandler,
   delay,
+  passthrough,
 } from "msw"
 
 export const createHandler = (
   route: EnhancedDevtoolsRoute
 ): RequestHandler | null => {
-  const { method, url, handlers, selectedHandlerId, isHidden } = route
+  const { method, url, handlers, selectedHandlerId, isHidden, enabled } = route
 
   const httpHandler = createHttpHandler(method)
   return httpHandler(url, async (info) => {
     const selectedHandler =
       handlers.find((handler) => handler.id === selectedHandlerId) ??
       handlers[0]
+
+
+    if (!enabled) {
+      return passthrough()
+    }
 
     if (isHidden) {
       return new HttpResponse()

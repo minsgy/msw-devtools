@@ -3,7 +3,7 @@ import { http } from "msw-devtools"
 
 export const handlers = [
   http
-    .get("https://json-test.com/v1/user", () => {
+    .get("https://jsonplaceholder.typicode.com/todos/1", () => {
       return HttpResponse.json({
         firstName: "zzz",
         lastName: "zzz",

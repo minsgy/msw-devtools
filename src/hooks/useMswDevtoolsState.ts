@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback, useEffect, useRef } from "react"
+import { useState, useEffect, useRef } from "react"
 import { MswDevtoolsContextType } from "../providers/useMswDevtoolsContext"
 import { EnhancedDevtoolsRoute } from ".."
 import { generatorSerializedRouteHandlers } from "@/shared/utils/generatorSerializedRouteHandlers"
@@ -8,20 +8,16 @@ import { generatorRequestHandler } from "@/shared/utils/generatorRequestHandler"
 
 export const useMswDevtoolsState = ({
   onRouteUpdate,
-  ...initialState
+  initialOpen,
+  isEnabled: initialIsEnabled,
+  worker,
 }: MswDevtoolsContextType) => {
   const isMounted = useRef(false)
-  const [state, setState] = useState(initialState)
+  const [isEnabled, setIsEnabled] = useState(initialIsEnabled ?? true)
+  const [isFloatingOpen, setIsFloatingOpen] = useState(initialOpen ?? false)
   const [routes, setRoutes] = useState<EnhancedDevtoolsRoute[]>(
-    generatorSerializedRouteHandlers(initialState.worker?.listHandlers() ?? [])
+    generatorSerializedRouteHandlers(worker?.listHandlers() ?? [])
   )
-
-  const setEnabled = useCallback((isEnabled: boolean) => {
-    setState((prev) => ({
-      ...prev,
-      isEnabled,
-    }))
-  }, [])
 
   const onDeleteHandler = (id: string) => {
     setRoutes((route) => route.filter((route) => route.id !== id))
@@ -45,28 +41,44 @@ export const useMswDevtoolsState = ({
     setRoutes(newRoutes)
   }
 
-  useEffect(() => {
-    if (state.worker) {
-      const usedRoutes = routes.filter(({ enabled }) => enabled)
-      const httpUsedRoutes = generatorRequestHandler(usedRoutes)
-      state.worker.resetHandlers(...httpUsedRoutes)
-      // first call is not needed
-      if (isMounted.current) {
-        onRouteUpdate?.(usedRoutes.filter(({ isHidden }) => !isHidden))
-      } else {
-        isMounted.current = true
+  useEffect(
+    function setupHandlers() {
+      if (worker) {
+        const httpUsedRoutes = generatorRequestHandler(routes)
+        worker.resetHandlers(...httpUsedRoutes)
+        // first call is not needed
+        if (isMounted.current) {
+          onRouteUpdate?.(routes)
+        } else {
+          isMounted.current = true
+        }
       }
-    }
-  }, [routes, state.worker])
+    },
+    [routes, worker]
+  )
+
+  useEffect(
+    function setupWorkerEnabled() {
+      if (isEnabled) {
+        worker.start()
+      } else {
+        worker.stop()
+      }
+    },
+    [isEnabled]
+  )
 
   return {
-    state,
-    setEnabled,
-    routes: routes.filter(({ isHidden }) => !isHidden),
+    worker,
+    isEnabled,
+    setIsEnabled,
+    routes,
     setRoutes,
     onDeleteHandler,
     onAddHandler,
     onToggleHandler,
     onSelectHandler,
+    isFloatingOpen,
+    setIsFloatingOpen,
   }
 }

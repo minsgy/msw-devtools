@@ -3,7 +3,7 @@ import { Card } from "./card"
 
 export const FixedLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <Card className="bottom-0 right-0 left-0 h-[400px] fixed z-[10]">
+    <Card className="fixed rounded-md bottom-[24px] right-[24px] w-full max-w-[880px] h-[400px] z-[10] max-[600px]:inset-0 max-[600px]:h-full  overflow-hidden">
       {children}
     </Card>
   )

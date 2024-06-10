@@ -1,5 +1,5 @@
 import { EnhancedDevtoolsRoute } from "@/types"
-import { HttpMethods, RequestHandler } from "msw"
+import { RequestHandler } from "msw"
 
 export const createdUuid = (): string => {
   return self.crypto.randomUUID()
@@ -36,28 +36,7 @@ export const generatorSerializedRouteHandlers = (
         delay: 0,
         selectedHandlerId: handlers[0]?.id,
       }
-    }) as EnhancedDevtoolsRoute[]
-  ).concat(unknownRoute)
+    })  
+  )
 }
-
-/**
- * https://mswjs.io/docs/api/setup-worker/reset-handlers
- */
-export const unknownRoute: EnhancedDevtoolsRoute = {
-  id: createdUuid(),
-  url: "unknown",
-  method: HttpMethods.GET,
-  enabled: true,
-  isHidden: true,
-  handlers: [
-    {
-      id: createdUuid(),
-      response: "{}",
-      status: 404,
-      description: "",
-      origin: "msw",
-    },
-  ] as any,
-  delay: 0,
-  selectedHandlerId: createdUuid(),
-}
+ 

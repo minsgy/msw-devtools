@@ -5,30 +5,18 @@ import {
   useIsEnabledValue,
   useEnabledUpdate,
   useEditorRouteState,
+  useFloatingState,
 } from "@/providers/useMswDevtoolsContext"
+import { Close } from "@/shared/icons"
 import { Button } from "@/shared/ui/button"
 import { Label } from "@/shared/ui/label"
 import { Switch } from "@/shared/ui/switch"
 
-import { useEffect } from "react"
-
 export const MswControllerHeader = () => {
-  const worker = useWorkerValue()
   const isEnabled = useIsEnabledValue()
   const setEnabled = useEnabledUpdate()
   const { setIsOpenEditorPanel } = useEditorRouteState()
-
-  useEffect(() => {
-    if (isEnabled) {
-      worker?.start()
-    } else {
-      worker?.stop()
-    }
-  }, [isEnabled])
-
-  if (!worker) {
-    return null
-  }
+  const { setIsFloatingOpen } = useFloatingState()
 
   return (
     <div className="flex items-center px-6 py-4 justify-between">
@@ -44,14 +32,25 @@ export const MswControllerHeader = () => {
           Enable Mock Service Worker
         </Label>
       </div>
-      <Button
-        variant="outline"
-        onClick={() => {
-          setIsOpenEditorPanel(true)
-        }}
-      >
-        Add Route
-      </Button>
+      <div className="flex">
+        <Button
+          variant="outline"
+          onClick={() => {
+            setIsOpenEditorPanel(true)
+          }}
+        >
+          Add Route
+        </Button>
+        <Button
+          variant="secondary"
+          className="ml-[4px]"
+          onClick={() => {
+            setIsFloatingOpen(false)
+          }}
+        >
+          <Close />
+        </Button>
+      </div>
     </div>
   )
 }

@@ -14,20 +14,24 @@ const [
   MswDevToolsProvider,
   useIsEnabledValue,
   useWorkerValue,
+  useFloatingState,
   useEnabledUpdate,
   useRoute,
   useEditorRouteState,
 ] = constate(
   (initialState: MswDevtoolsContextType) => {
     const {
-      state,
-      setEnabled,
+      worker,
+      setIsEnabled,
       routes,
       setRoutes,
       onAddHandler,
       onDeleteHandler,
       onToggleHandler,
       onSelectHandler,
+      isFloatingOpen,
+      isEnabled,
+      setIsFloatingOpen,
     } = useMswDevtoolsState(initialState)
     const {
       selectedRoute,
@@ -38,8 +42,8 @@ const [
     } = useEditorPanelState()
 
     return {
-      state,
-      setEnabled,
+      worker,
+      setIsEnabled,
       routes,
       setRoutes,
       onAddHandler,
@@ -51,11 +55,18 @@ const [
       isOpenEditorPanel,
       onCloseEditPanel,
       onSelectHandler,
+      isFloatingOpen,
+      setIsFloatingOpen,
+      isEnabled,
     }
   },
-  (value) => value.state.isEnabled,
-  (value) => value.state.worker,
-  (value) => value.setEnabled,
+  (value) => value.isEnabled,
+  (value) => value.worker,
+  (value) => ({
+    isFloatingOpen: value.isFloatingOpen,
+    setIsFloatingOpen: value.setIsFloatingOpen,
+  }),
+  (value) => value.setIsEnabled,
   (value) => ({
     routes: value.routes,
     onRoutesChange: value.setRoutes,
@@ -80,4 +91,5 @@ export {
   useEnabledUpdate,
   useRoute,
   useEditorRouteState,
+  useFloatingState,
 }

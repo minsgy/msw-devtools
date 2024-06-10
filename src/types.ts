@@ -1,8 +1,7 @@
 import { SetupWorker } from "msw/lib/browser"
-import { ComponentPropsWithoutRef } from "react"
 import { HttpMethods } from "msw"
 
-export interface MSWDevtoolsProps extends ComponentPropsWithoutRef<"div"> {
+export interface MSWDevtoolsProps {
   /**
    * The base url of your requests. This is required to use 'error' mode as it takes the base domain and intercepts any request regardless of the path.
    */
@@ -13,7 +12,7 @@ export interface MSWDevtoolsProps extends ComponentPropsWithoutRef<"div"> {
   /**
    * An instance of the MSW worker returned from `setupWorker`.
    */
-  worker?: SetupWorker
+  worker: SetupWorker
   /**
    * This component takes children so that it can ensure the worker has started before rendering the tree. This guarantees that
    * all requests will be intercepted.
@@ -36,9 +35,18 @@ export interface MSWDevtoolsProps extends ComponentPropsWithoutRef<"div"> {
    * )
    */
   onRouteUpdate?: (routes: EnhancedDevtoolsRoute[]) => void
+  /**
+   * The initialOpen field is a boolean that determines whether the devtools panel should be open by default.
+   * @default false
+   */
+  initialOpen?: boolean
+  /**
+   * The position field is a string that determines where the devtools panel should be positioned.
+   */
+  position?: Position
 }
 
-export type Setting = "mode" | "delay" | "status" | "isHidden"
+export type Position = "top-left" | "top-right" | "bottom-left" | "bottom-right"
 export type WorkerStatus = "enabled" | "disabled"
 export type WorkerMode = "normal" | "error"
 export type Origin = "msw" | "custom"
