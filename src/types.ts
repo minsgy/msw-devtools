@@ -57,7 +57,7 @@ export type DevtoolsHandler = {
   status: number
   description: string
   headers?: Record<string, string>
-  origin: Origin | string
+  origin: Origin
 }
 
 export type DevtoolsRoute = {
@@ -71,5 +71,4 @@ export type DevtoolsRoute = {
 
 export type EnhancedDevtoolsRoute = DevtoolsRoute & {
   enabled?: boolean
-  isHidden?: boolean
 }

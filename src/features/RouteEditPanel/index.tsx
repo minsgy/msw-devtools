@@ -9,7 +9,7 @@ export const RouteEditPanel = () => {
   const { onCloseEditPanel } = useEditorRouteState()
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full h-full">
       <header className="flex justify-between align-items px-[16px] py-[12px]">
         <H2>Create Route</H2>
         <Button

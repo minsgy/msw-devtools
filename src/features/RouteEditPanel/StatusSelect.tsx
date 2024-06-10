@@ -7,13 +7,16 @@ import {
 } from "@/shared/ui/select"
 import { STATUS_CODES } from "./constants"
 import { SelectProps } from "@radix-ui/react-select"
+import { FormControl } from "@/shared/ui/form"
 
 export const StatusSelect = ({ ...rest }: SelectProps) => {
   return (
     <Select {...rest}>
-      <SelectTrigger className="w-[280px]">
-        <SelectValue placeholder="Select HTTP Status" />
-      </SelectTrigger>
+      <FormControl>
+        <SelectTrigger className="w-[180px] text-left">
+          <SelectValue placeholder="Select HTTP Status" />
+        </SelectTrigger>
+      </FormControl>
       <SelectContent>
         {STATUS_CODES.map(({ label, value }) => {
           return (
