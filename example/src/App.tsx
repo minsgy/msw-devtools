@@ -9,7 +9,7 @@ function App() {
     queryKey: ["test"],
     queryFn: async () => {
       try {
-        const response = await fetch("https://json-test.com/v1/user")
+        const response = await fetch("https://jsonplaceholder.typicode.com/todos/1")
         setError(null)
         return response.json()
       } catch (e) {

@@ -47,12 +47,11 @@ export const useMswDevtoolsState = ({
 
   useEffect(() => {
     if (state.worker) {
-      const usedRoutes = routes.filter(({ enabled }) => enabled)
-      const httpUsedRoutes = generatorRequestHandler(usedRoutes)
+      const httpUsedRoutes = generatorRequestHandler(routes)
       state.worker.resetHandlers(...httpUsedRoutes)
       // first call is not needed
       if (isMounted.current) {
-        onRouteUpdate?.(usedRoutes.filter(({ isHidden }) => !isHidden))
+        onRouteUpdate?.(routes)
       } else {
         isMounted.current = true
       }
@@ -62,7 +61,7 @@ export const useMswDevtoolsState = ({
   return {
     state,
     setEnabled,
-    routes: routes.filter(({ isHidden }) => !isHidden),
+    routes,
     setRoutes,
     onDeleteHandler,
     onAddHandler,
