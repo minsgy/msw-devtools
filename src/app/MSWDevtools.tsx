@@ -8,8 +8,10 @@ export const MSWDevtools = ({
   children,
   worker,
   onRouteUpdate,
+  position,
+  initialOpen = false,
 }: MSWDevtoolsProps) => {
-  if ((isEnabled && !worker) || (isEnabled && worker && !worker)) {
+  if (isEnabled && !worker) {
     console.warn(
       "worker is not defined. Please pass in a worker instance from setupWorker(...handlers)"
     )
@@ -22,11 +24,12 @@ export const MSWDevtools = ({
   return (
     <>
       <MswDevToolsProvider
+        initialOpen={initialOpen}
         isEnabled={isEnabled}
         worker={worker}
         onRouteUpdate={onRouteUpdate}
       >
-        <MSWDevtoolsPanel />
+        <MSWDevtoolsPanel position={position} />
       </MswDevToolsProvider>
       {children}
     </>

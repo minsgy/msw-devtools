@@ -3,28 +3,47 @@ import { RouteEditPanel } from "./RouteEditPanel"
 import { Separator } from "@/shared/ui/separator"
 import { DevtoolsHandlerList } from "./DevtoolsHandlerList"
 import { MswControllerHeader } from "./MswControllerHeader"
-import { useEditorRouteState } from "@/providers/useMswDevtoolsContext"
-import { DevtoolsButton } from "./DevtoolsButton"
+import {
+  useEditorRouteState,
+  useFloatingState,
+} from "@/providers/useMswDevtoolsContext"
+import { DevtoolsFloatingButton } from "./DevtoolsFloatingButton"
+import { Position } from ".."
 
-export const MSWDevtoolsPanel = () => {
+type MSWDevtoolsPanelProps = {
+  position?: Position
+}
+
+export const MSWDevtoolsPanel = ({
+  position = "bottom-right",
+}: MSWDevtoolsPanelProps) => {
   const { isOpenEditorPanel } = useEditorRouteState()
+  const { isFloatingOpen, setIsFloatingOpen } = useFloatingState()
 
   return (
     <>
-      <DevtoolsButton position="bottom-right" />
-      <FixedLayout>
-        {isOpenEditorPanel ? (
-          <RouteEditPanel />
-        ) : (
-          <>
-            <MswControllerHeader />
-            <Separator />
-            <div className="p-[16px] h-full">
-              <DevtoolsHandlerList />
-            </div>
-          </>
-        )}
-      </FixedLayout>
+      {isFloatingOpen ? (
+        <FixedLayout>
+          {isOpenEditorPanel ? (
+            <RouteEditPanel />
+          ) : (
+            <>
+              <MswControllerHeader />
+              <Separator />
+              <div className="p-[16px] h-full">
+                <DevtoolsHandlerList />
+              </div>
+            </>
+          )}
+        </FixedLayout>
+      ) : (
+        <DevtoolsFloatingButton
+          position={position}
+          onClick={() => {
+            setIsFloatingOpen(true)
+          }}
+        />
+      )}
     </>
   )
 }

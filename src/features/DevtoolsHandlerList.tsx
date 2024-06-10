@@ -7,6 +7,7 @@ import { InlineCode, P } from "@/shared/ui/typography"
 import { HttpMethods } from "msw"
 import {
   useEditorRouteState,
+  useIsEnabledValue,
   useRoute,
 } from "@/providers/useMswDevtoolsContext"
 import { HandlerSelect } from "./HandlerSelect"
@@ -15,6 +16,7 @@ import { Switch } from "@/shared/ui/switch"
 import { Input } from "@/shared/ui/input"
 
 export const DevtoolsHandlerList = () => {
+  const isEnabled = useIsEnabledValue()
   const { routes, onToggleHandler, onSelectHandler } = useRoute()
   const { onOpenEditPanel } = useEditorRouteState()
 
@@ -56,6 +58,7 @@ export const DevtoolsHandlerList = () => {
                 Edit
               </Button>
               <Switch
+                disabled={!isEnabled}
                 checked={route.enabled}
                 onCheckedChange={(checked) => {
                   onToggleHandler(route.id, checked)
