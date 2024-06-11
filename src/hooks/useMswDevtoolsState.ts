@@ -41,6 +41,13 @@ export const useMswDevtoolsState = ({
     setRoutes(newRoutes)
   }
 
+  const onUpdateHandler = (routeId: string, route: EnhancedDevtoolsRoute) => {
+    const findIndex = routes.findIndex((route) => route.id === routeId)
+    const newRoutes = [...routes]
+    newRoutes[findIndex] = route
+    setRoutes(newRoutes)
+  }
+
   useEffect(
     function setupHandlers() {
       if (worker) {
@@ -78,6 +85,7 @@ export const useMswDevtoolsState = ({
     onAddHandler,
     onToggleHandler,
     onSelectHandler,
+    onUpdateHandler,
     isFloatingOpen,
     setIsFloatingOpen,
   }

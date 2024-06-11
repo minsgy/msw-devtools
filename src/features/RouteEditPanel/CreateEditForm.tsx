@@ -3,19 +3,14 @@ import { Form } from "@/shared/ui/form"
 import { useCreateEditFormState } from "./hooks/useCreateEditFormState"
 import { EditHandlerForm } from "./EditHandlerForm"
 import { EditRouteForm } from "./EditRouteForm"
-import { EnhancedDevtoolsRoute } from "@/types"
 
-type CreateEditFormProps = {
-  selectedRoute: EnhancedDevtoolsRoute | null
-}
-
-export const CreateEditForm = ({ selectedRoute }: CreateEditFormProps) => {
+export const CreateEditForm = () => {
   const {
     routeForm,
     handleRouteFormSubmit,
     handlerForm,
     handleHandlerFormSubmit,
-  } = useCreateEditFormState(selectedRoute)
+  } = useCreateEditFormState()
 
   return (
     <div className="overflow-y-auto scrollbar-hide">
@@ -23,13 +18,13 @@ export const CreateEditForm = ({ selectedRoute }: CreateEditFormProps) => {
         <form
           onSubmit={routeForm.handleSubmit(handleRouteFormSubmit)}
           className="text-left">
-          <EditRouteForm routeForm={routeForm} />
+          <EditRouteForm />
         </form>
       </Form>
       <Separator />
       <Form {...handlerForm}>
         <form onSubmit={handlerForm.handleSubmit(handleHandlerFormSubmit)}>
-          <EditHandlerForm handlerForm={handlerForm} />
+          <EditHandlerForm />
         </form>
       </Form>
     </div>

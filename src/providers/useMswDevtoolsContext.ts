@@ -29,6 +29,7 @@ const [
       onDeleteHandler,
       onToggleHandler,
       onSelectHandler,
+      onUpdateHandler,
       isFloatingOpen,
       isEnabled,
       setIsFloatingOpen,
@@ -57,6 +58,7 @@ const [
       onSelectHandler,
       isFloatingOpen,
       setIsFloatingOpen,
+      onUpdateHandler,
       isEnabled,
     }
   },
@@ -70,6 +72,7 @@ const [
   (value) => ({
     routes: value.routes,
     onRoutesChange: value.setRoutes,
+    onUpdateHandler: value.onUpdateHandler,
     onDeleteHandler: value.onDeleteHandler,
     onAddHandler: value.onAddHandler,
     onToggleHandler: value.onToggleHandler,

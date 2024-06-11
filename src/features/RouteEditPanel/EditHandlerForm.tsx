@@ -7,18 +7,16 @@ import {
 } from "@/shared/ui/form"
 import { StatusSelect } from "./StatusSelect"
 import { ResponseJsonEditor } from "./ResponseJsonEditor"
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { CreateHandlerFormValues } from "./hooks/useCreateEditFormState"
 import { Input } from "@/shared/ui/input"
 import { Separator } from "@/shared/ui/separator"
 import { Button } from "@/shared/ui/button"
 import { formattedJson } from "./utils/formattedJson"
 
-type EditHandlerFormProps = {
-  handlerForm: UseFormReturn<CreateHandlerFormValues>
-}
+export const EditHandlerForm = () => {
+  const handlerForm = useFormContext<CreateHandlerFormValues>()
 
-export const EditHandlerForm = ({ handlerForm }: EditHandlerFormProps) => {
   return (
     <>
       <div className="flex py-[12px] px-[16px] space-x-2 text-left items-end">
@@ -29,12 +27,11 @@ export const EditHandlerForm = ({ handlerForm }: EditHandlerFormProps) => {
             return (
               <FormItem>
                 <FormLabel>Response Status</FormLabel>
-                <FormControl>
-                  <StatusSelect
-                    onValueChange={field.onChange}
-                    defaultValue={String(field.value)}
-                  />
-                </FormControl>
+                <StatusSelect
+                  value={String(field.value)}
+                  onValueChange={field.onChange}
+                  defaultValue={String(field.value)}
+                />
                 <FormMessage />
               </FormItem>
             )
@@ -74,8 +71,7 @@ export const EditHandlerForm = ({ handlerForm }: EditHandlerFormProps) => {
                 onSave={async () => {
                   try {
                     const formattedResponse = await formattedJson(field.value)
-                    // LINK: https://github.com/prettier/prettier/issues/6360
-                    field.onChange(formattedResponse.replace(/[\r\n]+$/, ""))
+                    field.onChange(formattedResponse)
                   } catch (error) {
                     const formattedError =
                       error instanceof Error ? error.message : "Unknown Error"

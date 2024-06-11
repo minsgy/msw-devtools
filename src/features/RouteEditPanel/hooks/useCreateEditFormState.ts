@@ -5,15 +5,15 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { getDefaultResponse } from "../utils/getDefaultResponse"
 import { useEffect } from "react"
-import { useRoute } from "@/providers/useMswDevtoolsContext"
+import {
+  useEditorRouteState,
+  useRoute,
+} from "@/providers/useMswDevtoolsContext"
 import { useEditorPanelState } from "@/hooks/useEditorPanelState"
-import { EnhancedDevtoolsRoute } from "@/types"
 import { formattedJson } from "../utils/formattedJson"
 
 export type CreateRouteFormValues = z.infer<typeof createRouteFormSchema>
 export type CreateHandlerFormValues = z.infer<typeof createHandlerFormSchema>
-
-const URL_REGEX = /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/gm
 
 const createHandlerFormSchema = z.object({
   response: z.string(),
@@ -25,25 +25,22 @@ const createHandlerFormSchema = z.object({
 
 const createRouteFormSchema = z.object({
   id: z.string().default(createdUuid()),
-  url: z
-    .string()
-    .refine(
-      (url) => URL_REGEX.test(url ?? ""),
-      "Invalid URL. Please a valid URL. Example: https://example.com/..."
-    ),
+  // TODO: URL pattern that the route should match.
+  url: z.string(),
   method: z.nativeEnum(HttpMethods),
   selectedHandlerId: z.string(),
   handlers: z.array(createHandlerFormSchema).min(1),
   delay: z.coerce.number(),
   description: z.string().optional(),
   enabled: z.boolean().default(true),
+  origin: z.union([z.literal("msw"), z.literal("custom")]).default("custom"),
+  temporarySelectedHandlerId: z.string(),
 })
 
-export const useCreateEditFormState = (
-  selectedRoute: EnhancedDevtoolsRoute | null
-) => {
+export const useCreateEditFormState = () => {
   const defaultHandler = getDefaultResponse(0)
-  const { onAddHandler } = useRoute()
+  const { selectedRoute } = useEditorRouteState()
+  const { onAddHandler, onUpdateHandler } = useRoute()
   const { setIsOpenEditorPanel } = useEditorPanelState()
   const routeForm = useForm<CreateRouteFormValues>({
     resolver: zodResolver(createRouteFormSchema),
@@ -55,6 +52,7 @@ export const useCreateEditFormState = (
       method: HttpMethods.GET,
       handlers: [defaultHandler],
       selectedHandlerId: defaultHandler.id,
+      temporarySelectedHandlerId: defaultHandler.id,
     },
   })
 
@@ -65,17 +63,20 @@ export const useCreateEditFormState = (
     defaultValues: defaultHandler,
   })
 
-  const selectedHandlerId = routeForm.watch("selectedHandlerId")
-  const selectedHandlerIndex =
-    routeForm
-      .getValues("handlers")
-      .findIndex((handler) => handler.id === selectedHandlerId) ?? 0
-  const selectedHandler = routeForm.getValues(
-    `handlers.${selectedHandlerIndex}`
+  const temporarySelectedHandlerId = routeForm.watch(
+    "temporarySelectedHandlerId"
   )
+  const selectedHandlerIndex = routeForm
+    .getValues("handlers")
+    .findIndex((handler) => handler.id === temporarySelectedHandlerId)
+  const selectedHandler = routeForm.watch(`handlers.${selectedHandlerIndex}`)
 
   const handleRouteFormSubmit = (values: CreateRouteFormValues) => {
-    onAddHandler(values)
+    if (selectedRoute === null) {
+      onAddHandler(values)
+    } else {
+      onUpdateHandler(selectedRoute.id, values)
+    }
     setIsOpenEditorPanel(false)
   }
 
@@ -87,13 +88,10 @@ export const useCreateEditFormState = (
 
   useEffect(
     function setupHandlerForm() {
-      if (!selectedHandlerId) {
-        handlerForm.reset()
-      } else {
-        handlerForm.reset(selectedHandler)
-      }
+      if (selectedHandlerIndex === -1) return
+      handlerForm.reset(selectedHandler)
     },
-    [selectedHandlerId]
+    [selectedHandlerIndex, selectedHandler]
   )
 
   useEffect(() => {
@@ -110,6 +108,7 @@ export const useCreateEditFormState = (
           handlers: formattedHandlers,
           selectedHandlerId: selectedRoute?.selectedHandlerId,
           delay: selectedRoute?.delay ?? 0,
+          temporarySelectedHandlerId: formattedHandlers[0].id,
         })
       }
     }
@@ -118,6 +117,7 @@ export const useCreateEditFormState = (
 
   return {
     routeForm,
+    selectedHandler,
     handlerForm,
     handleRouteFormSubmit,
     handleHandlerFormSubmit,

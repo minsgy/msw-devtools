@@ -17,27 +17,31 @@ import {
   SelectValue,
 } from "@/shared/ui/select"
 import { Separator } from "@/shared/ui/separator"
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { CreateRouteFormValues } from "./hooks/useCreateEditFormState"
 import { getDefaultResponse } from "./utils/getDefaultResponse"
+import { useEffect, useState } from "react"
+import { match } from "ts-pattern"
 
-type EditRouteFormProps = {
-  routeForm: UseFormReturn<CreateRouteFormValues>
-}
-
-export const EditRouteForm = ({ routeForm }: EditRouteFormProps) => {
+export const EditRouteForm = () => {
+  const [selectedHandlerId, setSelectedHandlerId] = useState("")
+  const routeForm = useFormContext<CreateRouteFormValues>()
   const handlers = routeForm.watch("handlers")
   const handleAddHandler = () => {
     const defaultHandler = getDefaultResponse(handlers.length)
-    routeForm.setValue(
-      "handlers",
-      [...handlers, getDefaultResponse(handlers.length)],
-      {
-        shouldValidate: true,
-      }
-    )
-    routeForm.setValue("selectedHandlerId", defaultHandler.id)
+    routeForm.setValue("handlers", [...handlers, defaultHandler])
   }
+
+  useEffect(() => {
+    if (handlers.length === 0) return
+    const selectedHandlerId = match(handlers.length)
+      .with(1, () => handlers[0]?.id)
+      .otherwise(() => handlers[handlers.length - 1]?.id)
+    setSelectedHandlerId(selectedHandlerId)
+    routeForm.setValue("temporarySelectedHandlerId", selectedHandlerId, {
+      shouldValidate: true,
+    })
+  }, [handlers, setSelectedHandlerId])
 
   return (
     <>
@@ -48,22 +52,23 @@ export const EditRouteForm = ({ routeForm }: EditRouteFormProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Methods</FormLabel>
-              <FormControl>
-                <Select
-                  defaultValue={field.value}
-                  onValueChange={field.onChange}>
+              <Select
+                defaultValue={field.value}
+                onValueChange={field.onChange}
+                value={field.value}>
+                <FormControl>
                   <SelectTrigger className="min-w-[60px]">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
-                    {ROUTE_METHODS.map((method) => (
-                      <SelectItem key={method} value={method}>
-                        {method}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
+                </FormControl>
+                <SelectContent>
+                  {ROUTE_METHODS.map((method) => (
+                    <SelectItem key={method} value={method}>
+                      {method}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}
@@ -101,33 +106,26 @@ export const EditRouteForm = ({ routeForm }: EditRouteFormProps) => {
         <Button type="button" variant="outline" onClick={handleAddHandler}>
           <Plus />
         </Button>
-        <FormField
-          control={routeForm.control}
-          name="selectedHandlerId"
-          render={({ field }) => (
-            <FormItem className="flex-1">
-              <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}>
-                  <SelectTrigger
-                    className="flex-1"
-                    placeholder="Select a handler">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {handlers.map(({ status, description, id }) => (
-                      <SelectItem key={id} value={id}>
-                        {status} - {description}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage className="text-red-400" />
-            </FormItem>
-          )}
-        />
+        <FormItem className="flex-1">
+          <Select
+            onValueChange={(value) => {
+              routeForm.setValue("temporarySelectedHandlerId", value)
+              setSelectedHandlerId(value)
+            }}
+            value={selectedHandlerId}
+            defaultValue={handlers[0]?.id}>
+            <SelectTrigger className="flex-1" placeholder="Select a handler">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {handlers.map(({ status, description, id }) => (
+                <SelectItem key={id} value={id}>
+                  {status} - {description}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </FormItem>
       </div>
     </>
   )
