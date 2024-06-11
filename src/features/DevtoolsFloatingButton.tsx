@@ -25,14 +25,12 @@ export const DevtoolsFloatingButton = ({
       className={cn(
         "z-[100000] fixed p-[4px] text-left flex items-center justify-center rounded-full ",
         positionClassName
-      )}
-    >
+      )}>
       {/* TODO: LOGO CHANGE (temporary logo) */}
       <Button
         className="[&>svg]:absolute w-[64px] h-[64px] shadow-md shadow-black transition-transform duration-200 ease-in-out hover:scale-[1.02]"
         variant="destructive"
-        {...rest}
-      >
+        {...rest}>
         <MswLogo />
       </Button>
     </div>

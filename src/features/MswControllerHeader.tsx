@@ -1,7 +1,6 @@
 "use client"
 
 import {
-  useWorkerValue,
   useIsEnabledValue,
   useEnabledUpdate,
   useEditorRouteState,
@@ -37,8 +36,7 @@ export const MswControllerHeader = () => {
           variant="outline"
           onClick={() => {
             setIsOpenEditorPanel(true)
-          }}
-        >
+          }}>
           Add Route
         </Button>
         <Button
@@ -46,8 +44,7 @@ export const MswControllerHeader = () => {
           className="ml-[4px]"
           onClick={() => {
             setIsFloatingOpen(false)
-          }}
-        >
+          }}>
           <Close />
         </Button>
       </div>

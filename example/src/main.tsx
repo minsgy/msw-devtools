@@ -30,8 +30,7 @@ prepareWorker().then((worker) =>
           onRouteUpdate={() => {
             console.log("[MSW Devtools] Route updated")
             queryClient.resetQueries()
-          }}
-        >
+          }}>
           <App />
         </MSWDevtools>
       </QueryClientProvider>

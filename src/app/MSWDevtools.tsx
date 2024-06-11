@@ -27,8 +27,7 @@ export const MSWDevtools = ({
         initialOpen={initialOpen}
         isEnabled={isEnabled}
         worker={worker}
-        onRouteUpdate={onRouteUpdate}
-      >
+        onRouteUpdate={onRouteUpdate}>
         <MSWDevtoolsPanel position={position} />
       </MswDevToolsProvider>
       {children}

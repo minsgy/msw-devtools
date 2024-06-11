@@ -1,5 +1,3 @@
-import { createdUuid } from "@/shared/utils/generatorSerializedRouteHandlers"
-
 export const STATUS_CODES = [
   { value: 100, label: "100 - Continue" },
   { value: 101, label: "101 - Switching Protocols" },

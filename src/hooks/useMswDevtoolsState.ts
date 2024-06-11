@@ -54,7 +54,7 @@ export const useMswDevtoolsState = ({
         }
       }
     },
-    [routes, worker]
+    [routes, worker, onRouteUpdate]
   )
 
   useEffect(
@@ -65,7 +65,7 @@ export const useMswDevtoolsState = ({
         worker.stop()
       }
     },
-    [isEnabled]
+    [isEnabled, worker]
   )
 
   return {

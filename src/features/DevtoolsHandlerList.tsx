@@ -13,7 +13,6 @@ import {
 import { HandlerSelect } from "./HandlerSelect"
 import { Button } from "@/shared/ui/button"
 import { Switch } from "@/shared/ui/switch"
-import { Input } from "@/shared/ui/input"
 
 export const DevtoolsHandlerList = () => {
   const isEnabled = useIsEnabledValue()
@@ -37,10 +36,9 @@ export const DevtoolsHandlerList = () => {
               </span>
             </div>
             <div className="flex items-center max-[600px]:pt-[12px]">
-              <div className="flex items-center w-[80px]">
-                <Input />
-                <span className="pl-[2px] text-gray-500">MS</span>
-              </div>
+              {route.origin === "custom" && (
+                <InlineCode className="mr-[12px]">{route.origin}</InlineCode>
+              )}
               <HandlerSelect
                 onValueChange={(handlerId) =>
                   onSelectHandler(route.id, handlerId)
@@ -53,8 +51,7 @@ export const DevtoolsHandlerList = () => {
                 variant="ghost"
                 onClick={() => {
                   onOpenEditPanel(route)
-                }}
-              >
+                }}>
                 Edit
               </Button>
               <Switch

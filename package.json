@@ -34,7 +34,10 @@
   "scripts": {
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
     "build": "tsup src/index.ts --format cjs,esm --dts --minify",
-    "example": "pnpm build && cd example && pnpm i && pnpm dev"
+    "example": "pnpm build && cd example && pnpm i && pnpm dev",
+    "prettier": "prettier --ignore-path .gitignore --write \"**/*.+(js|jsx|ts|tsx|css|scss|md|json)\"",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix"
   },
   "dependencies": {
     "@codemirror/autocomplete": "^6.16.2",
@@ -78,7 +81,12 @@
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3",
-    "tsup": "^7.1.0"
+    "tsup": "^7.1.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0"
   },
   "peerDependencies": {
     "msw": ">=2",

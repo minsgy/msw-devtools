@@ -71,4 +71,5 @@ export type DevtoolsRoute = {
 
 export type EnhancedDevtoolsRoute = DevtoolsRoute & {
   enabled?: boolean
+  origin?: Origin
 }

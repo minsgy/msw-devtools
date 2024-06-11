@@ -72,7 +72,7 @@ type HttpRequestHandler<
 }
 
 // 4. custom http object creation
-let http = originHttp as {
+const http = originHttp as {
   [method in keyof typeof originHttp]: HttpRequestHandler
 }
 

@@ -1,7 +1,6 @@
 import CodeMirror, {
   KeyBinding,
   ReactCodeMirrorProps,
-  hoverTooltip,
   keymap,
 } from "@uiw/react-codemirror"
 import { githubDark } from "@uiw/codemirror-theme-github"
