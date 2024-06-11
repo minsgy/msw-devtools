@@ -63,6 +63,7 @@
     "clsx": "^2.1.1",
     "codemirror-json5": "^1.0.3",
     "constate": "^3.3.2",
+    "json5": "^2.2.3",
     "lucide-react": "0.378.0",
     "msw": "2.2.13",
     "postcss": "^8.4.38",

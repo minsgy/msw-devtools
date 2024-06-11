@@ -1,4 +1,5 @@
 import { EnhancedDevtoolsRoute } from "@/types"
+import json5 from "json5"
 import { faker } from "@faker-js/faker"
 import {
   HttpHandler,
@@ -25,17 +26,15 @@ export const createHandler = (
       return passthrough()
     }
 
-    const jsonResponse = JSON.parse(selectedHandler.response)
+    const jsonResponse = json5.parse(selectedHandler.response)
     if (jsonResponse) {
       recursiveTransform(jsonResponse, (key, value) => {
         if (typeof value === "number") {
           return value
         }
-
         if (value.startsWith("faker.")) {
           return resolveFakerValue(key, value)
         }
-
         return value
       })
     }
