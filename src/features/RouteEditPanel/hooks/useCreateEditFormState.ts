@@ -9,7 +9,6 @@ import {
   useEditorRouteState,
   useRoute,
 } from "@/providers/useMswDevtoolsContext"
-import { useEditorPanelState } from "@/hooks/useEditorPanelState"
 import { formattedJson } from "../utils/formattedJson"
 
 export type CreateRouteFormValues = z.infer<typeof createRouteFormSchema>
@@ -39,13 +38,13 @@ const createRouteFormSchema = z.object({
 
 export const useCreateEditFormState = () => {
   const defaultHandler = getDefaultResponse(0)
-  const { selectedRoute } = useEditorRouteState()
+  const { selectedRoute, onCloseEditPanel } = useEditorRouteState()
   const { onAddHandler, onUpdateHandler } = useRoute()
-  const { setIsOpenEditorPanel } = useEditorPanelState()
   const routeForm = useForm<CreateRouteFormValues>({
     resolver: zodResolver(createRouteFormSchema),
     mode: "onSubmit",
     reValidateMode: "onSubmit",
+    shouldUnregister: false,
     defaultValues: {
       delay: 0,
       url: "",
@@ -75,9 +74,10 @@ export const useCreateEditFormState = () => {
     if (selectedRoute === null) {
       onAddHandler(values)
     } else {
+      console.log("selectedRoute.id", selectedRoute.id, values)
       onUpdateHandler(selectedRoute.id, values)
     }
-    setIsOpenEditorPanel(false)
+    onCloseEditPanel()
   }
 
   const handleHandlerFormSubmit = (values: CreateHandlerFormValues) => {

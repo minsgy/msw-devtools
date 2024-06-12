@@ -7,6 +7,7 @@ export const formattedJson = async (field: string) => {
     tabWidth: 4,
     printWidth: 10,
     parser: "json5",
+    trailingComma: "none",
     plugins: [babel, prettierPluginEstree],
   })
   // LINK: https://github.com/prettier/prettier/issues/6360

@@ -1,5 +1,6 @@
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -13,6 +14,7 @@ import { Input } from "@/shared/ui/input"
 import { Separator } from "@/shared/ui/separator"
 import { Button } from "@/shared/ui/button"
 import { formattedJson } from "./utils/formattedJson"
+import { InlineCode } from "@/shared/ui/typography"
 
 export const EditHandlerForm = () => {
   const handlerForm = useFormContext<CreateHandlerFormValues>()
@@ -72,6 +74,7 @@ export const EditHandlerForm = () => {
                   try {
                     const formattedResponse = await formattedJson(field.value)
                     field.onChange(formattedResponse)
+                    handlerForm.clearErrors(`response`)
                   } catch (error) {
                     const formattedError =
                       error instanceof Error ? error.message : "Unknown Error"
@@ -82,6 +85,10 @@ export const EditHandlerForm = () => {
                 }}
               />
             </FormControl>
+            <FormDescription>
+              You can use the <InlineCode>Ctrl + S</InlineCode> shortcut to save
+              the JSON formatting.
+            </FormDescription>
           </FormItem>
         )}
       />

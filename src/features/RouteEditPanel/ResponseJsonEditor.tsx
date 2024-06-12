@@ -58,6 +58,7 @@ export const ResponseJsonEditor = ({
         history: true,
         bracketMatching: true,
       }}
+      onBlur={() => onSave?.()}
       {...rest}
     />
   )

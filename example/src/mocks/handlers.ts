@@ -14,8 +14,8 @@ export const handlers = [
         status: 200,
         description: "Success",
         response: {
-          firstName: "John",
-          lastName: "Maverick",
+          firstName: "리",
+          lastName: "앜코",
         },
       },
       {

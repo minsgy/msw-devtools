@@ -14,7 +14,6 @@ import { HandlerSelect } from "./HandlerSelect"
 import { Button } from "@/shared/ui/button"
 import { Switch } from "@/shared/ui/switch"
 import {
-  TableCaption,
   TableHeader,
   TableRow,
   TableHead,
@@ -31,7 +30,6 @@ export const DevtoolsHandlerList = () => {
 
   return (
     <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="w-[100px]">Methods</TableHead>
@@ -53,11 +51,12 @@ export const DevtoolsHandlerList = () => {
             <TableCell>
               <div className="flex items-center">
                 <HandlerSelect
+                  value={route.selectedHandlerId}
                   onValueChange={(handlerId) =>
                     onSelectHandler(route.id, handlerId)
                   }
                   options={route.handlers}
-                  defaultValue={route.handlers?.[0]?.id ?? undefined}
+                  defaultValue={route.selectedHandlerId ?? route.handlers[0].id}
                 />
                 {route.origin === "custom" && (
                   <InlineCode>{route.origin}</InlineCode>
