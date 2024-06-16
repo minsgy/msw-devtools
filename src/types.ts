@@ -1,5 +1,6 @@
 import { HttpMethods } from "msw"
 import { SetupWorker } from "./shared/lib/worker"
+import { Http } from "./shared/lib/http"
 
 export interface MSWDevtoolsProps {
   /**
@@ -49,6 +50,12 @@ export interface MSWDevtoolsProps {
    * @default "msw-devtools-state-key"
    */
   storageKey?: string
+}
+
+export type ScenarioRoutePreset = {
+  id?: string
+  description: string
+  handlers: ReturnType<Http[keyof Http]>[]
 }
 
 export type Position = "top-left" | "top-right" | "bottom-left" | "bottom-right"

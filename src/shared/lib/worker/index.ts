@@ -3,13 +3,8 @@ import {
   type SetupWorker as OriginSetupWorker,
 } from "msw/browser"
 import { RequestHandler } from "msw"
-import type { Http } from "../http"
-
-export type ScenarioRoutePreset = {
-  scenarioName: string
-  handlers: Array<ReturnType<Http[keyof Http]>>
-  isEnabled?: boolean
-}
+import { createdUuid } from "@/shared/utils/generatorSerializedRouteHandlers"
+import { ScenarioRoutePreset } from "@/types"
 
 export type SetupWorker = (
   ...handlers: Array<RequestHandler>
@@ -26,9 +21,14 @@ const setupWorker = new Proxy(originSetupWorker, {
   apply: (target, thisArg, argArray) => {
     const originWorker = Reflect.apply(target, thisArg, argArray)
     const scenarios: ScenarioRoutePreset[] = []
-    originWorker.scenario = (scenario: ScenarioRoutePreset[]) => {
-      scenarios.push(...scenario)
-      return scenario
+    originWorker.scenario = (_scenarios: ScenarioRoutePreset[]) => {
+      const newScenario = _scenarios.map(({ id, ...scenario }) => ({
+        id: id ?? createdUuid(),
+        ...scenario,
+      }))
+
+      scenarios.push(...newScenario)
+      return newScenario
     }
     originWorker.listScenarios = () => {
       return scenarios
@@ -36,11 +36,5 @@ const setupWorker = new Proxy(originSetupWorker, {
     return originWorker
   },
 }) as SetupWorker
-
-export const createScenarioPreset = (
-  scenarioRoutePreset: ScenarioRoutePreset[]
-) => {
-  return scenarioRoutePreset
-}
 
 export { setupWorker }

@@ -7,33 +7,31 @@ export const worker = setupWorker(...handlers)
 
 worker.scenario([
   {
-    scenarioName: "test",
+    description: "장바구니 상품 추가 시나리오",
     handlers: [
-      http.get("https://jsonplaceholder.typicode.com/todos/1", () => {
+      http.get("https://jsonplaceholder.typicode.com/cart", () => {
         return HttpResponse.json({
           firstName: "111",
           lastName: "111",
         })
       }),
-      http.get("https://jsonplaceholder.typicode.com/todos/2", () => {
+      http.post("https://jsonplaceholder.typicode.com/cart/1", () => {
         return HttpResponse.json({
           firstName: "222",
           lastName: "222",
         })
       }),
     ],
-    isEnabled: true,
   },
   {
-    scenarioName: "test2",
+    description: "장바구니 상품 삭제 시나리오",
     handlers: [
-      http.get("https://jsonplaceholder.typicode.com/todos/3", () => {
+      http.delete("https://jsonplaceholder.typicode.com/cart/1", () => {
         return HttpResponse.json({
           firstName: "333",
           lastName: "333",
         })
       }),
     ],
-    isEnabled: false,
   },
 ])

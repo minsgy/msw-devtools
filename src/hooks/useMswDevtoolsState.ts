@@ -2,22 +2,22 @@
 
 import { useState, useEffect, useRef } from "react"
 import { MswDevtoolsContextType } from "../providers/useMswDevtoolsContext"
-import { EnhancedDevtoolsRoute } from ".."
+import { EnhancedDevtoolsRoute, ScenarioRoutePreset } from ".."
 import { generatorSerializedRouteHandlers } from "@/shared/utils/generatorSerializedRouteHandlers"
 import { generatorRequestHandler } from "@/shared/utils/generatorRequestHandler"
 
 export const useMswDevtoolsState = ({
   onRouteUpdate,
-  initialOpen,
   isEnabled: initialIsEnabled,
   worker,
 }: MswDevtoolsContextType) => {
   const isMounted = useRef(false)
   const [isEnabled, setIsEnabled] = useState(initialIsEnabled ?? true)
-  const [isFloatingOpen, setIsFloatingOpen] = useState(initialOpen ?? false)
   const [routes, setRoutes] = useState<EnhancedDevtoolsRoute[]>(
     generatorSerializedRouteHandlers(worker?.listHandlers() ?? [])
   )
+  const [selectedScenario, setSelectedScenario] =
+    useState<ScenarioRoutePreset | null>(worker?.listScenarios()[0] ?? null)
 
   const onDeleteHandler = (id: string) => {
     setRoutes((route) => route.filter((route) => route.id !== id))
@@ -48,11 +48,17 @@ export const useMswDevtoolsState = ({
     setRoutes(newRoutes)
   }
 
+  const onSelectScenario = (scenario: ScenarioRoutePreset) => {
+    setSelectedScenario(scenario)
+  }
+
   useEffect(
     function setupHandlers() {
       if (worker) {
+        console.log(worker.listHandlers())
         const httpUsedRoutes = generatorRequestHandler(routes)
-        worker.resetHandlers(...httpUsedRoutes)
+        const selectedScenarioHandlers = selectedScenario?.handlers ?? []
+        worker.resetHandlers(...httpUsedRoutes, ...selectedScenarioHandlers)
         if (isMounted.current) {
           onRouteUpdate?.(routes)
         } else {
@@ -85,7 +91,7 @@ export const useMswDevtoolsState = ({
     onToggleHandler,
     onSelectHandler,
     onUpdateHandler,
-    isFloatingOpen,
-    setIsFloatingOpen,
+    onSelectScenario,
+    selectedScenario,
   }
 }

@@ -1,12 +1,16 @@
 import { ROUTE_METHODS } from "@/constants"
 import {
   DefaultBodyType,
-  HttpHandler,
+  HttpHandler as OriginHttpHandler,
   HttpResponseResolver,
   Path,
   PathParams,
   http as originHttp,
 } from "msw"
+
+type HttpHandler = OriginHttpHandler & {
+  presets: (presets: HttpPreset[]) => OriginHttpHandler
+}
 
 // 1. constant definition
 const HTTP_METHODS = ROUTE_METHODS.map((method) =>
@@ -32,18 +36,33 @@ const createProxyMethod = <
       const [url, responseHandlers] = argArray
       const responseHandlersWithPresets = (...rest: any) =>
         responseHandlers(...rest)
-      const result = Reflect.apply(target, thisArg, [
+      const result: HttpHandler = Reflect.apply(target, thisArg, [
         url,
         responseHandlersWithPresets,
       ])
 
-      result.presets = (presets: HttpPreset[]) =>
-        Reflect.apply(target, thisArg, [
+      const response: Response = responseHandlers()
+      const { status, statusText } = response
+      function presets(presets: HttpPreset[]) {
+        // TODO: response.json() async
+        const json = response.json()
+
+        const defaultResponseWithPresets: HttpPreset[] = [
+          ...presets,
+          {
+            status,
+            description: statusText,
+            response: json, // TODO: response.json() async
+          },
+        ]
+        return Reflect.apply(target, thisArg, [
           url,
           responseHandlersWithPresets,
-          presets,
-        ])
+          defaultResponseWithPresets,
+        ]) as HttpHandler
+      }
 
+      result.presets = presets
       return result
     },
   }) as HttpRequestHandler<
@@ -81,8 +100,8 @@ export type Http = {
 const http = originHttp as Http
 
 // 5. method assignment
-HTTP_METHODS.forEach((method: keyof typeof originHttp) => {
-  http[method] = createProxyMethod(method)
+HTTP_METHODS.forEach(async (method: keyof typeof originHttp) => {
+  http[method] = await createProxyMethod(method)
 })
 
 export { http }
