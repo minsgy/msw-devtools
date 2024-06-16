@@ -9,7 +9,9 @@ function App() {
     queryKey: ["test"],
     queryFn: async () => {
       try {
-        const response = await fetch("https://jsonplaceholder.typicode.com/todos/1")
+        const response = await fetch(
+          "https://jsonplaceholder.typicode.com/todos/1"
+        )
         setError(null)
         return response.json()
       } catch (e) {
@@ -28,8 +30,7 @@ function App() {
       <div
         style={{
           textAlign: "left",
-        }}
-      >
+        }}>
         <JsonView style={darkStyles} data={data} />
         {error && (
           <p
@@ -37,8 +38,7 @@ function App() {
               color: "red",
               fontSize: "1.2rem",
               fontWeight: "bold",
-            }}
-          >
+            }}>
             {error}
           </p>
         )}

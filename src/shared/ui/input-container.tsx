@@ -16,8 +16,7 @@ export const InputContainer = ({
     <div className={twMerge("flex items-center", containerClassName)}>
       <Label
         htmlFor={rest.id}
-        className="text-primary flex-shrink-0 font-semibold"
-      >
+        className="text-primary flex-shrink-0 font-semibold">
         {label}
       </Label>
       <Input className={twMerge("ml-[12px]", rest.className)} {...rest} />

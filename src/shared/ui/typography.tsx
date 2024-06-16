@@ -12,8 +12,7 @@ const H1 = forwardRef<
       className={cn(
         "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl",
         props.className
-      )}
-    >
+      )}>
       {props.children}
     </h1>
   )
@@ -33,8 +32,7 @@ const H2 = forwardRef<
       className={cn(
         "scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0",
         props.className
-      )}
-    >
+      )}>
       {props.children}
     </h2>
   )
@@ -54,8 +52,7 @@ const H3 = forwardRef<
       className={cn(
         "scroll-m-20 text-2xl font-semibold tracking-tight",
         props.className
-      )}
-    >
+      )}>
       {props.children}
     </h3>
   )
@@ -75,8 +72,7 @@ const H4 = forwardRef<
       className={cn(
         "scroll-m-20 text-xl font-semibold tracking-tight",
         props.className
-      )}
-    >
+      )}>
       {props.children}
     </h4>
   )
@@ -93,8 +89,7 @@ const Lead = forwardRef<
     <p
       {...props}
       ref={ref}
-      className={cn("text-xl text-muted-foreground", props.className)}
-    >
+      className={cn("text-xl text-muted-foreground", props.className)}>
       {props.children}
     </p>
   )
@@ -123,8 +118,7 @@ const Large = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
       <div
         {...props}
         ref={ref}
-        className={cn("text-lg font-semibold", props.className)}
-      >
+        className={cn("text-lg font-semibold", props.className)}>
         {props.children}
       </div>
     )
@@ -142,8 +136,7 @@ const Small = forwardRef<
     <p
       {...props}
       ref={ref}
-      className={cn("text-sm font-medium leading-none", props.className)}
-    >
+      className={cn("text-sm font-medium leading-none", props.className)}>
       {props.children}
     </p>
   )
@@ -160,8 +153,7 @@ const Muted = forwardRef<
     <span
       {...props}
       ref={ref}
-      className={cn("text-sm text-muted-foreground", props.className)}
-    >
+      className={cn("text-sm text-muted-foreground", props.className)}>
       {props.children}
     </span>
   )
@@ -179,10 +171,9 @@ const InlineCode = forwardRef<
       {...props}
       ref={ref}
       className={cn(
-        "relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold",
+        "relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold text-center",
         props.className
-      )}
-    >
+      )}>
       {props.children}
     </code>
   )
@@ -199,8 +190,7 @@ const List = forwardRef<
     <ul
       {...props}
       ref={ref}
-      className={cn("my-6 ml-6 list-disc [&>li]:mt-2", props.className)}
-    >
+      className={cn("my-6 ml-6 list-disc [&>li]:mt-2", props.className)}>
       {props.children}
     </ul>
   )
@@ -220,8 +210,7 @@ const Quote = forwardRef<
       className={cn(
         "mt-6 border-l-2 pl-6 italic text-muted-foreground",
         props.className
-      )}
-    >
+      )}>
       {props.children}
     </blockquote>
   )

@@ -1,4 +1,5 @@
 import { EnhancedDevtoolsRoute } from "@/types"
+import json5 from "json5"
 import { faker } from "@faker-js/faker"
 import {
   HttpHandler,
@@ -13,34 +14,27 @@ import {
 export const createHandler = (
   route: EnhancedDevtoolsRoute
 ): RequestHandler | null => {
-  const { method, url, handlers, selectedHandlerId, isHidden, enabled } = route
+  const { method, url, handlers, selectedHandlerId, enabled } = route
 
   const httpHandler = createHttpHandler(method)
-  return httpHandler(url, async (info) => {
+  return httpHandler(url, async () => {
     const selectedHandler =
       handlers.find((handler) => handler.id === selectedHandlerId) ??
       handlers[0]
-
 
     if (!enabled) {
       return passthrough()
     }
 
-    if (isHidden) {
-      return new HttpResponse()
-    }
-
-    const jsonResponse = JSON.parse(selectedHandler.response)
+    const jsonResponse = json5.parse(selectedHandler.response)
     if (jsonResponse) {
       recursiveTransform(jsonResponse, (key, value) => {
         if (typeof value === "number") {
           return value
         }
-
         if (value.startsWith("faker.")) {
           return resolveFakerValue(key, value)
         }
-
         return value
       })
     }

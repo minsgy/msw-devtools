@@ -44,6 +44,11 @@ export interface MSWDevtoolsProps {
    * The position field is a string that determines where the devtools panel should be positioned.
    */
   position?: Position
+  /**
+   * localStorage key to persist the state of the devtools panel.
+   * @default "msw-devtools-state-key"
+   */
+  storageKey?: string
 }
 
 export type Position = "top-left" | "top-right" | "bottom-left" | "bottom-right"
@@ -57,7 +62,7 @@ export type DevtoolsHandler = {
   status: number
   description: string
   headers?: Record<string, string>
-  origin: Origin | string
+  origin: Origin
 }
 
 export type DevtoolsRoute = {
@@ -71,5 +76,5 @@ export type DevtoolsRoute = {
 
 export type EnhancedDevtoolsRoute = DevtoolsRoute & {
   enabled?: boolean
-  isHidden?: boolean
+  origin?: Origin
 }

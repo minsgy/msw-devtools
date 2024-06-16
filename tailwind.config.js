@@ -1,11 +1,9 @@
-import plugin from 'tailwindcss/plugin'
+import plugin from "tailwindcss/plugin"
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  content: [
-    './src/**/*.{ts,tsx}',
-  ],
+  content: ["./src/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
     container: {
@@ -17,20 +15,17 @@ module.exports = {
     },
     extend: {
       shadow: {
-        xs: (_ = 'rgb(0 0 0 / 0.1)') =>
-          `0 1px 2px 0 rgb(0 0 0 / 0.05)`,
-        sm: (color = 'rgb(0 0 0 / 0.1)') =>
+        xs: (_ = "rgb(0 0 0 / 0.1)") => `0 1px 2px 0 rgb(0 0 0 / 0.05)`,
+        sm: (color = "rgb(0 0 0 / 0.1)") =>
           `0 1px 3px 0 ${color}, 0 1px 2px -1px ${color}`,
-        md: (color = 'rgb(0 0 0 / 0.1)') =>
+        md: (color = "rgb(0 0 0 / 0.1)") =>
           `0 4px 6px -1px ${color}, 0 2px 4px -2px ${color}`,
-        lg: (color = 'rgb(0 0 0 / 0.1)') =>
+        lg: (color = "rgb(0 0 0 / 0.1)") =>
           `0 10px 15px -3px ${color}, 0 4px 6px -4px ${color}`,
-        xl: (color = 'rgb(0 0 0 / 0.1)') =>
+        xl: (color = "rgb(0 0 0 / 0.1)") =>
           `0 20px 25px -5px ${color}, 0 8px 10px -6px ${color}`,
-        '2xl': (color = 'rgb(0 0 0 / 0.25)') =>
-          `0 25px 50px -12px ${color}`,
-        inner: (color = 'rgb(0 0 0 / 0.05)') =>
-          `inset 0 2px 4px 0 ${color}`,
+        "2xl": (color = "rgb(0 0 0 / 0.25)") => `0 25px 50px -12px ${color}`,
+        inner: (color = "rgb(0 0 0 / 0.05)") => `inset 0 2px 4px 0 ${color}`,
         none: () => `none`,
       },
       colors: {
@@ -89,15 +84,16 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), 
+  plugins: [
+    require("tailwindcss-animate"),
     plugin(({ addUtilities }) => {
       addUtilities({
-        '.scrollbar-hide': {
-          '&::-webkit-scrollbar': {
-            display: 'none',
+        ".scrollbar-hide": {
+          "&::-webkit-scrollbar": {
+            display: "none",
           },
-          '-ms-overflow-style': 'none',
-          'scrollbar-width': 'none',
+          "-ms-overflow-style": "none",
+          "scrollbar-width": "none",
         },
       })
     }),

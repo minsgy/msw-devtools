@@ -1,7 +1,6 @@
 import CodeMirror, {
   KeyBinding,
   ReactCodeMirrorProps,
-  hoverTooltip,
   keymap,
 } from "@uiw/react-codemirror"
 import { githubDark } from "@uiw/codemirror-theme-github"
@@ -59,6 +58,7 @@ export const ResponseJsonEditor = ({
         history: true,
         bracketMatching: true,
       }}
+      onBlur={() => onSave?.()}
       {...rest}
     />
   )

@@ -16,7 +16,7 @@ const createJsonPropertyAutocomplete = (
   globalObject: Record<string, unknown>
 ): ((context: CompletionContext) => CompletionResult | null) => {
   return (context) => {
-    let nodeBefore = syntaxTree(context.state).resolveInner(context.pos, -1)
+    const nodeBefore = syntaxTree(context.state).resolveInner(context.pos, -1)
     if (
       nodeBefore.name !== "String" &&
       nodeBefore.parent?.name !== "Property"
