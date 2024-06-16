@@ -53,7 +53,6 @@ export const useMswDevtoolsState = ({
       if (worker) {
         const httpUsedRoutes = generatorRequestHandler(routes)
         worker.resetHandlers(...httpUsedRoutes)
-        // first call is not needed
         if (isMounted.current) {
           onRouteUpdate?.(routes)
         } else {

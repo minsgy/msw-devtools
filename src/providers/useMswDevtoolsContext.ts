@@ -3,12 +3,14 @@
 import constate from "constate"
 import { useMswDevtoolsState } from "../hooks/useMswDevtoolsState"
 import { useEditorPanelState } from "@/hooks/useEditorPanelState"
-import { MSWDevtoolsProps } from ".."
+import { MSWDevtoolsProps, SetupWorker } from ".."
 
 export type MswDevtoolsContextType = Omit<
   MSWDevtoolsProps,
-  "children" | "position"
->
+  "children" | "position" | "worker"
+> & {
+  worker: ReturnType<SetupWorker>
+}
 
 const [
   MswDevToolsProvider,

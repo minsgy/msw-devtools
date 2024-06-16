@@ -36,12 +36,14 @@ const createProxyMethod = <
         url,
         responseHandlersWithPresets,
       ])
+
       result.presets = (presets: HttpPreset[]) =>
         Reflect.apply(target, thisArg, [
           url,
           responseHandlersWithPresets,
           presets,
         ])
+
       return result
     },
   }) as HttpRequestHandler<
@@ -59,7 +61,7 @@ type HttpPreset = {
   response: any
 }
 
-type HttpRequestHandler<
+export type HttpRequestHandler<
   Params extends PathParams<keyof Params> = PathParams,
   RequestBodyType extends DefaultBodyType = DefaultBodyType,
   ResponseBodyType extends DefaultBodyType = undefined,
@@ -71,10 +73,12 @@ type HttpRequestHandler<
   presets: (presets: HttpPreset[]) => HttpHandler
 }
 
-// 4. custom http object creation
-const http = originHttp as {
+export type Http = {
   [method in keyof typeof originHttp]: HttpRequestHandler
 }
+
+// 4. custom http object creation
+const http = originHttp as Http
 
 // 5. method assignment
 HTTP_METHODS.forEach((method: keyof typeof originHttp) => {
