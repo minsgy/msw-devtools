@@ -42,17 +42,13 @@ const createProxyMethod = <
       ])
 
       const response: Response = responseHandlers()
-      const { status, statusText } = response
       function presets(presets: HttpPreset[]) {
-        // TODO: response.json() async
-        const json = response.json()
-
         const defaultResponseWithPresets: HttpPreset[] = [
           ...presets,
           {
-            status,
-            description: statusText,
-            response: json, // TODO: response.json() async
+            status: response.status,
+            description: response.statusText,
+            response: response, // TODO: response.json() async
           },
         ]
         return Reflect.apply(target, thisArg, [

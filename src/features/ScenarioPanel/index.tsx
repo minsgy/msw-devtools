@@ -9,22 +9,25 @@ import { TableRow, TableBody, TableCell, Table } from "@/shared/ui/table"
 import { MethodTag } from "../DevtoolsHandlerList"
 
 import { Switch } from "@/shared/ui/switch"
+import { Fragment } from "react"
+import { HandlerSelect } from "../HandlerSelect"
 export const ScenarioPanel = () => {
   const isEnabled = useIsEnabledValue()
   const { listScenarios } = useWorkerValue()
-  console.log(generatorSerializedRouteHandlers(listScenarios()[0].handlers))
 
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex flex-col w-full">
       <header className="flex justify-between align-items px-[16px] py-[12px]">
         <H2>Scenario Case</H2>
       </header>
       <Separator />
-      <div className="overflow-y-auto scrollbar-hide">
+      <div className="overflow-y-auto scrollbar-hide h-[400px]">
         {listScenarios().map((scenario) => (
-          <div>
-            <div className="p-4">
-              <P>Description: {scenario.description}</P>
+          <Fragment key={scenario.id}>
+            <div className="px-4 pt-4 pb-2">
+              <P>
+                <InlineCode>Description</InlineCode> {scenario.description}
+              </P>
             </div>
             <div className="px-6">
               <Table>
@@ -42,16 +45,17 @@ export const ScenarioPanel = () => {
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center">
-                            {/* <HandlerSelect
-                            value={route.selectedHandlerId}
-                            onValueChange={(handlerId) =>
-                              onSelectHandler(route.id, handlerId)
-                            }
-                            options={route.handlers}
-                            defaultValue={
-                              route.selectedHandlerId ?? route.handlers[0].id
-                            }
-                          /> */}
+                            <HandlerSelect
+                              value={route.selectedHandlerId}
+                              onValueChange={(handlerId) => {
+                                console.log(handlerId, route.id)
+                                // onSelectHandler(route.id, handlerId)
+                              }}
+                              options={route.handlers}
+                              defaultValue={
+                                route.selectedHandlerId ?? route.handlers[0].id
+                              }
+                            />
                             {route.origin === "custom" && (
                               <InlineCode>{route.origin}</InlineCode>
                             )}
@@ -72,7 +76,7 @@ export const ScenarioPanel = () => {
                 </TableBody>
               </Table>
             </div>
-          </div>
+          </Fragment>
         ))}
       </div>
     </div>

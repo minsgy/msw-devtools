@@ -20,7 +20,7 @@ export const MSWDevtoolsPanel = ({
 
   return (
     <FixedLayout>
-      <Tabs defaultValue="routes">
+      <Tabs defaultValue="routes" className="h-full">
         <div className="p-4 flex justify-between">
           <TabsList>
             <TabsTrigger value="routes">Routes</TabsTrigger>
