@@ -5,6 +5,6 @@ export const getDefaultResponse = (id: number): DevtoolsHandler => ({
   id: createdUuid(),
   response: "{}",
   status: 200,
-  description: `msw devtools handler - response ${id}`,
+  description: `response ${id}`,
   origin: "msw",
 })

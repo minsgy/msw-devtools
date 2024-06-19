@@ -20,7 +20,7 @@ export const MSWDevtoolsPanel = ({
 
   return (
     <FixedLayout>
-      <Tabs defaultValue="routes" className="h-full">
+      <Tabs defaultValue="routes" className="h-full flex flex-col">
         <div className="p-4 flex justify-between">
           <TabsList>
             <TabsTrigger value="routes">Routes</TabsTrigger>
@@ -39,7 +39,7 @@ export const MSWDevtoolsPanel = ({
             <DevtoolsHandlerList />
           </div>
         </TabsContent>
-        <TabsContent value="scenario">
+        <TabsContent value="scenario" className="flex-1 min-h-0">
           <ScenarioPanel />
         </TabsContent>
       </Tabs>

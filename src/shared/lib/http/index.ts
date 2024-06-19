@@ -6,6 +6,7 @@ import {
   Path,
   PathParams,
   http as originHttp,
+  HttpResponse,
 } from "msw"
 
 type HttpHandler = OriginHttpHandler & {
@@ -41,7 +42,8 @@ const createProxyMethod = <
         responseHandlersWithPresets,
       ])
 
-      const response: Response = responseHandlers()
+      const response: HttpResponse = responseHandlers()
+
       function presets(presets: HttpPreset[]) {
         const defaultResponseWithPresets: HttpPreset[] = [
           ...presets,
