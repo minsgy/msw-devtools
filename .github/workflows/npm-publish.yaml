@@ -17,7 +17,7 @@ jobs:
         run: npm install -g pnpm@9.0.6
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfil
-      - name: npm publish
-        uses: JS-DevTools/npm-publish@v3
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
+      - name: pnpm publish
+        run: pnpm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
