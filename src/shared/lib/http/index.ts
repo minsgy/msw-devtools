@@ -1,12 +1,17 @@
 import { ROUTE_METHODS } from "@/constants"
 import {
   DefaultBodyType,
-  HttpHandler,
+  HttpHandler as OriginHttpHandler,
   HttpResponseResolver,
   Path,
   PathParams,
   http as originHttp,
+  HttpResponse,
 } from "msw"
+
+type HttpHandler = OriginHttpHandler & {
+  presets: (presets: HttpPreset[]) => OriginHttpHandler
+}
 
 // 1. constant definition
 const HTTP_METHODS = ROUTE_METHODS.map((method) =>
@@ -32,16 +37,36 @@ const createProxyMethod = <
       const [url, responseHandlers] = argArray
       const responseHandlersWithPresets = (...rest: any) =>
         responseHandlers(...rest)
-      const result = Reflect.apply(target, thisArg, [
+      const response: HttpResponse = responseHandlers()
+      const result: HttpHandler = Reflect.apply(target, thisArg, [
         url,
         responseHandlersWithPresets,
+        [
+          {
+            status: response.status,
+            description: response.statusText,
+            response: response, // TODO: response.json() async
+          },
+        ],
       ])
-      result.presets = (presets: HttpPreset[]) =>
-        Reflect.apply(target, thisArg, [
+
+      function presets(presets: HttpPreset[]) {
+        const defaultResponseWithPresets: HttpPreset[] = [
+          {
+            status: response.status,
+            description: response.statusText,
+            response: response, // TODO: response.json() async
+          },
+          ...presets,
+        ]
+        return Reflect.apply(target, thisArg, [
           url,
           responseHandlersWithPresets,
-          presets,
-        ])
+          defaultResponseWithPresets,
+        ]) as HttpHandler
+      }
+
+      result.presets = presets
       return result
     },
   }) as HttpRequestHandler<
@@ -59,7 +84,7 @@ type HttpPreset = {
   response: any
 }
 
-type HttpRequestHandler<
+export type HttpRequestHandler<
   Params extends PathParams<keyof Params> = PathParams,
   RequestBodyType extends DefaultBodyType = DefaultBodyType,
   ResponseBodyType extends DefaultBodyType = undefined,
@@ -71,14 +96,16 @@ type HttpRequestHandler<
   presets: (presets: HttpPreset[]) => HttpHandler
 }
 
-// 4. custom http object creation
-const http = originHttp as {
+export type Http = {
   [method in keyof typeof originHttp]: HttpRequestHandler
 }
 
+// 4. custom http object creation
+const http = originHttp as Http
+
 // 5. method assignment
-HTTP_METHODS.forEach((method: keyof typeof originHttp) => {
-  http[method] = createProxyMethod(method)
+HTTP_METHODS.forEach(async (method: keyof typeof originHttp) => {
+  http[method] = await createProxyMethod(method)
 })
 
 export { http }

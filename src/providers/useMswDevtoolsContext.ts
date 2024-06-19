@@ -3,21 +3,23 @@
 import constate from "constate"
 import { useMswDevtoolsState } from "../hooks/useMswDevtoolsState"
 import { useEditorPanelState } from "@/hooks/useEditorPanelState"
-import { MSWDevtoolsProps } from ".."
+import { MSWDevtoolsProps, SetupWorker } from ".."
 
 export type MswDevtoolsContextType = Omit<
   MSWDevtoolsProps,
-  "children" | "position"
->
+  "children" | "worker"
+> & {
+  worker: ReturnType<SetupWorker>
+}
 
 const [
   MswDevToolsProvider,
   useIsEnabledValue,
   useWorkerValue,
-  useFloatingState,
   useEnabledUpdate,
   useRoute,
   useEditorRouteState,
+  useScenarioState,
 ] = constate(
   (initialState: MswDevtoolsContextType) => {
     const {
@@ -30,9 +32,9 @@ const [
       onToggleHandler,
       onSelectHandler,
       onUpdateHandler,
-      isFloatingOpen,
+      selectedScenario,
+      onSelectScenario,
       isEnabled,
-      setIsFloatingOpen,
     } = useMswDevtoolsState(initialState)
     const {
       selectedRoute,
@@ -56,18 +58,14 @@ const [
       isOpenEditorPanel,
       onCloseEditPanel,
       onSelectHandler,
-      isFloatingOpen,
-      setIsFloatingOpen,
       onUpdateHandler,
       isEnabled,
+      selectedScenario,
+      onSelectScenario,
     }
   },
   (value) => value.isEnabled,
   (value) => value.worker,
-  (value) => ({
-    isFloatingOpen: value.isFloatingOpen,
-    setIsFloatingOpen: value.setIsFloatingOpen,
-  }),
   (value) => value.setIsEnabled,
   (value) => ({
     routes: value.routes,
@@ -84,6 +82,10 @@ const [
     isOpenEditorPanel: value.isOpenEditorPanel,
     setIsOpenEditorPanel: value.setIsOpenEditorPanel,
     onCloseEditPanel: value.onCloseEditPanel,
+  }),
+  (value) => ({
+    selectedScenario: value.selectedScenario,
+    onSelectScenario: value.onSelectScenario,
   })
 )
 
@@ -94,5 +96,5 @@ export {
   useEnabledUpdate,
   useRoute,
   useEditorRouteState,
-  useFloatingState,
+  useScenarioState,
 }

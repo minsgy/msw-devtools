@@ -1,5 +1,5 @@
-import { SetupWorker } from "msw/lib/browser"
-import { HttpMethods } from "msw"
+import { HttpHandler, HttpMethods } from "msw"
+import { SetupWorker } from "./shared/lib/worker"
 
 export interface MSWDevtoolsProps {
   /**
@@ -12,7 +12,7 @@ export interface MSWDevtoolsProps {
   /**
    * An instance of the MSW worker returned from `setupWorker`.
    */
-  worker: SetupWorker
+  worker?: ReturnType<SetupWorker>
   /**
    * This component takes children so that it can ensure the worker has started before rendering the tree. This guarantees that
    * all requests will be intercepted.
@@ -49,6 +49,12 @@ export interface MSWDevtoolsProps {
    * @default "msw-devtools-state-key"
    */
   storageKey?: string
+}
+
+export type ScenarioRoutePreset = {
+  id?: string
+  description: string
+  handlers: HttpHandler[]
 }
 
 export type Position = "top-left" | "top-right" | "bottom-left" | "bottom-right"

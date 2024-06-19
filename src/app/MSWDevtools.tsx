@@ -2,6 +2,8 @@ import "@/shared/styles/global.css"
 import { MSWDevtoolsProps } from "../types"
 import { MswDevToolsProvider } from "@/providers/useMswDevtoolsContext"
 import { MSWDevtoolsPanel } from "@/features/MSWDevtoolsPanel"
+import { useState } from "react"
+import { DevtoolsFloatingButton } from "@/features/DevtoolsFloatingButton"
 
 export const MSWDevtools = ({
   isEnabled = false,
@@ -11,6 +13,8 @@ export const MSWDevtools = ({
   position,
   initialOpen = false,
 }: MSWDevtoolsProps) => {
+  const [isOpened, setIsOpened] = useState(initialOpen)
+
   if (isEnabled && !worker) {
     console.warn(
       "worker is not defined. Please pass in a worker instance from setupWorker(...handlers)"
@@ -28,7 +32,20 @@ export const MSWDevtools = ({
         isEnabled={isEnabled}
         worker={worker}
         onRouteUpdate={onRouteUpdate}>
-        <MSWDevtoolsPanel position={position} />
+        {isOpened ? (
+          <MSWDevtoolsPanel
+            onCloseDevtools={() => {
+              setIsOpened(false)
+            }}
+          />
+        ) : (
+          <DevtoolsFloatingButton
+            position={position}
+            onClick={() => {
+              setIsOpened(true)
+            }}
+          />
+        )}
       </MswDevToolsProvider>
       {children}
     </>

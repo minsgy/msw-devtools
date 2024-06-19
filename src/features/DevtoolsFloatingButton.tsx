@@ -6,7 +6,7 @@ import { match } from "ts-pattern"
 import { Position } from ".."
 
 type DevtoolsFloatingButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  position: Position
+  position?: Position
 }
 
 export const DevtoolsFloatingButton = ({

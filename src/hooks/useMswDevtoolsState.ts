@@ -2,22 +2,22 @@
 
 import { useState, useEffect, useRef } from "react"
 import { MswDevtoolsContextType } from "../providers/useMswDevtoolsContext"
-import { EnhancedDevtoolsRoute } from ".."
+import { EnhancedDevtoolsRoute, ScenarioRoutePreset } from ".."
 import { generatorSerializedRouteHandlers } from "@/shared/utils/generatorSerializedRouteHandlers"
 import { generatorRequestHandler } from "@/shared/utils/generatorRequestHandler"
 
 export const useMswDevtoolsState = ({
   onRouteUpdate,
-  initialOpen,
   isEnabled: initialIsEnabled,
   worker,
 }: MswDevtoolsContextType) => {
   const isMounted = useRef(false)
   const [isEnabled, setIsEnabled] = useState(initialIsEnabled ?? true)
-  const [isFloatingOpen, setIsFloatingOpen] = useState(initialOpen ?? false)
   const [routes, setRoutes] = useState<EnhancedDevtoolsRoute[]>(
     generatorSerializedRouteHandlers(worker?.listHandlers() ?? [])
   )
+  const [selectedScenario, setSelectedScenario] =
+    useState<ScenarioRoutePreset | null>(null)
 
   const onDeleteHandler = (id: string) => {
     setRoutes((route) => route.filter((route) => route.id !== id))
@@ -48,12 +48,16 @@ export const useMswDevtoolsState = ({
     setRoutes(newRoutes)
   }
 
+  const onSelectScenario = (scenario: ScenarioRoutePreset | null) => {
+    setSelectedScenario(scenario)
+  }
+
   useEffect(
     function setupHandlers() {
       if (worker) {
         const httpUsedRoutes = generatorRequestHandler(routes)
-        worker.resetHandlers(...httpUsedRoutes)
-        // first call is not needed
+        const selectedScenarioHandlers = selectedScenario?.handlers ?? []
+        worker.resetHandlers(...httpUsedRoutes, ...selectedScenarioHandlers)
         if (isMounted.current) {
           onRouteUpdate?.(routes)
         } else {
@@ -61,7 +65,7 @@ export const useMswDevtoolsState = ({
         }
       }
     },
-    [routes, worker, onRouteUpdate]
+    [routes, worker, onRouteUpdate, selectedScenario]
   )
 
   useEffect(
@@ -86,7 +90,7 @@ export const useMswDevtoolsState = ({
     onToggleHandler,
     onSelectHandler,
     onUpdateHandler,
-    isFloatingOpen,
-    setIsFloatingOpen,
+    onSelectScenario,
+    selectedScenario,
   }
 }
