@@ -17,7 +17,7 @@ export const useMswDevtoolsState = ({
     generatorSerializedRouteHandlers(worker?.listHandlers() ?? [])
   )
   const [selectedScenario, setSelectedScenario] =
-    useState<ScenarioRoutePreset | null>(worker?.listScenarios()[0] ?? null)
+    useState<ScenarioRoutePreset | null>(null)
 
   const onDeleteHandler = (id: string) => {
     setRoutes((route) => route.filter((route) => route.id !== id))
@@ -48,14 +48,13 @@ export const useMswDevtoolsState = ({
     setRoutes(newRoutes)
   }
 
-  const onSelectScenario = (scenario: ScenarioRoutePreset) => {
+  const onSelectScenario = (scenario: ScenarioRoutePreset | null) => {
     setSelectedScenario(scenario)
   }
 
   useEffect(
     function setupHandlers() {
       if (worker) {
-        console.log(worker.listHandlers())
         const httpUsedRoutes = generatorRequestHandler(routes)
         const selectedScenarioHandlers = selectedScenario?.handlers ?? []
         worker.resetHandlers(...httpUsedRoutes, ...selectedScenarioHandlers)
@@ -66,7 +65,7 @@ export const useMswDevtoolsState = ({
         }
       }
     },
-    [routes, worker, onRouteUpdate]
+    [routes, worker, onRouteUpdate, selectedScenario]
   )
 
   useEffect(

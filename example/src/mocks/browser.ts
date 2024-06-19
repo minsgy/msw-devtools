@@ -9,12 +9,23 @@ worker.scenario([
   {
     description: "장바구니 상품 추가 시나리오",
     handlers: [
-      http.get("https://jsonplaceholder.typicode.com/cart", () => {
-        return HttpResponse.json({
-          firstName: "111",
-          lastName: "111",
+      http
+        .get("https://jsonplaceholder.typicode.com/cart", () => {
+          return HttpResponse.json({
+            firstName: "111",
+            lastName: "111",
+          })
         })
-      }),
+        .presets([
+          {
+            status: 200,
+            description: "장바구니 상품 추가",
+            response: {
+              firstName: "111",
+              lastName: "111",
+            },
+          },
+        ]),
       http.post("https://jsonplaceholder.typicode.com/cart/1", () => {
         return HttpResponse.json({
           firstName: "222",

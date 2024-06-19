@@ -14,7 +14,7 @@ export type SetupWorker = (
    *
    */
   scenario: (scenarioRoutePreset: ScenarioRoutePreset[]) => void
-  listScenarios: () => ScenarioRoutePreset[]
+  listScenarios: ScenarioRoutePreset[]
 }
 
 const setupWorker = new Proxy(originSetupWorker, {
@@ -26,13 +26,10 @@ const setupWorker = new Proxy(originSetupWorker, {
         id: id ?? createdUuid(),
         ...scenario,
       }))
-
       scenarios.push(...newScenario)
       return newScenario
     }
-    originWorker.listScenarios = () => {
-      return scenarios
-    }
+    originWorker.listScenarios = scenarios
     return originWorker
   },
 }) as SetupWorker

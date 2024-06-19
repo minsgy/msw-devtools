@@ -37,21 +37,27 @@ const createProxyMethod = <
       const [url, responseHandlers] = argArray
       const responseHandlersWithPresets = (...rest: any) =>
         responseHandlers(...rest)
+      const response: HttpResponse = responseHandlers()
       const result: HttpHandler = Reflect.apply(target, thisArg, [
         url,
         responseHandlersWithPresets,
-      ])
-
-      const response: HttpResponse = responseHandlers()
-
-      function presets(presets: HttpPreset[]) {
-        const defaultResponseWithPresets: HttpPreset[] = [
-          ...presets,
+        [
           {
             status: response.status,
             description: response.statusText,
             response: response, // TODO: response.json() async
           },
+        ],
+      ])
+
+      function presets(presets: HttpPreset[]) {
+        const defaultResponseWithPresets: HttpPreset[] = [
+          {
+            status: response.status,
+            description: response.statusText,
+            response: response, // TODO: response.json() async
+          },
+          ...presets,
         ]
         return Reflect.apply(target, thisArg, [
           url,

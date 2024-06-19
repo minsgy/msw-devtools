@@ -31,7 +31,7 @@ export const MSWDevtoolsPanel = ({
           </Button>
         </div>
         <Separator />
-        <TabsContent value="routes">
+        <TabsContent value="routes" className="flex-1 min-h-0">
           {isOpenEditorPanel && <RouteEditPanel />}
           <MswControllerHeader />
           <Separator />

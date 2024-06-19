@@ -19,6 +19,7 @@ const [
   useEnabledUpdate,
   useRoute,
   useEditorRouteState,
+  useScenarioState,
 ] = constate(
   (initialState: MswDevtoolsContextType) => {
     const {
@@ -95,4 +96,5 @@ export {
   useEnabledUpdate,
   useRoute,
   useEditorRouteState,
+  useScenarioState,
 }
